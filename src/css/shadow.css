@@ -1,0 +1,15 @@
+.shadow-only-bottom {
+    box-shadow: 0 7px 7px -7px lightgrey;
+}
+
+.shadow-only-right {
+    box-shadow: 7px 0 7px -7px lightgrey;
+}
+
+.shadow-only-left {
+    box-shadow: -7px 0 7px -7px lightgrey;
+}
+
+.shadow-only-top {
+    box-shadow: 0 -7px 7px -7px lightgrey;
+}

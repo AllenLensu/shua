@@ -1,0 +1,31 @@
+{
+  "name": "shua",
+  "version": "1.1.0",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^1.1.4",
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@vitejs/plugin-vue-jsx": "^1.3.9",
+    "axios": "^0.26.1",
+    "element-plus": "^2.1.9",
+    "moment": "^2.29.2",
+    "umi-request": "^1.4.0",
+    "vditor": "^3.8.13",
+    "vue": "^3.2.32",
+    "vue-i18n": "^9.1.9",
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@intlify/vite-plugin-vue-i18n": "^3.4.0",
+    "@types/node": "^17.0.23",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "vite": "^2.9.1"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "language": {
+    "title": "Language Switcher",
+    "language": "Language",
+    "America": "American English(en-US)",
+    "China": "简体中文(zh-CN)",
+    "more": "More are waiting for supporting"
+  },
+  "navigation": {
+    "home": "home",
+    "account": {
+      "login": "Log In",
+      "signup": "Sign Up"
+    },
+    "partition": {
+      "partition": "Partition"
+    }
+  },
+  "content": {
+    "uname": "User Name",
+    "star": "Follow",
+    "unStar": "Unfollow",
+    "content": "What user send can be seen here",
+    "description": "Personal Description"
+  },
+  "account": {
+    "id": "ID",
+    "password": "Password",
+    "account": "Account",
+    "logout": "Log out"
+  },
+  "config": {
+    "submit": "Submit",
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "next": "Next",
+    "prev": "Prev",
+    "select": "Select"
+  },
+  "zone": {
+    "zone": "MyZone",
+    "settings": "Settings"
+  },
+  "register": {
+    "username": "Username",
+    "password": "Password",
+    "firstname": "First Name",
+    "lastname": "Last Name",
+    "email": "E-Mail",
+    "phone": "Phone",
+    "gender": "Gender",
+    "age": "Age",
+    "birthday": "Birthday",
+    "resident": "Resident",
+    "household": "Household",
+    "avatar": "Avatar",
+    "uploadAvatar": "Upload Avatar"
+  },
+  "post": {
+    "addPost": "New Topic",
+    "send": "Send",
+    "contentHint": "Please input your content here"
+  },
+  "tip": {
+    "tip": "Tips",
+    "waiting": "SORRY! TODO IMPLEMENT!"
+  },
+  "manage": {
+    "id": "ID",
+    "name": "Name",
+    "sex": "Gender",
+    "age": "Age",
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "birthday": "Birthday",
+    "resident": "Resident",
+    "household": "Household",
+    "signature": "Signature",
+    "introduction": "Introduction",
+    "operations": "Operations",
+    "operation": {
+      "detail": "Details",
+      "edit": "Edit"
+    }
+  }
+}

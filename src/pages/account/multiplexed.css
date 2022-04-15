@@ -1,0 +1,82 @@
+video#video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: white no-repeat;
+    background-size: cover;
+}
+
+.container {
+    width: 100%;
+    height: calc(100vh - 58px);
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    display: flex;
+    min-width: 60%;
+    min-height: calc((100% - 58px) * 0.6);
+    background-color: white;
+}
+
+.box.login.page {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.box.register.page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.box.register.content {
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(10% - 46px);
+    padding: 20px;
+}
+
+.box.button.arrange {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.whitespace.bottom {
+    margin-bottom: 10%;
+}
+
+.whitespace.bottom.small {
+    margin-bottom: 5%;
+}
+
+.whitespace.bottom.large {
+    margin-bottom: 15%;
+}
+
+.whitespace.top {
+    margin-top: 10%;
+}
+
+.whitespace.top.small {
+    margin-top: 5%;
+}
+
+.whitespace.top.large {
+    margin-top: 15%;
+}

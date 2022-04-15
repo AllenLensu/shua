@@ -1,0 +1,94 @@
+@font-face {
+    font-family: LXGW-R;
+    src: url("../assets/font/LXGWR.ttf");
+    font-weight: normal;
+}
+@font-face {
+    font-family: HYVIVO;
+    src: url('../assets/font/HYVIVO-75S.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH45;
+    src: url('../assets/font/HYYakuHei-45W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH55;
+    src: url('../assets/font/HYYakuHei-55W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH65;
+    src: url('../assets/font/HYYakuHei-65W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH75;
+    src: url('../assets/font/HYYakuHei-75W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH85;
+    src: url('../assets/font/HYYakuHei-85W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: YKH95;
+    src: url('../assets/font/HYYakuHei-95W.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: typeB;
+    src: url('../assets/font/vivo type CNS Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: typeL;
+    src: url('../assets/font/vivo type CNS Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: vivoB;
+    src: url('../assets/font/vivo-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: vivoL;
+    src: url('../assets/font/vivo-Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: vivoR;
+    src: url('../assets/font/vivo-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font.global {
+    font-family: vivoR, YKH55, sans-serif;
+}
+
+.font.global.size.title {
+    font-size: xx-large;
+}
+
+.font.global.size.subtitle {
+    font-size: larger;
+}
