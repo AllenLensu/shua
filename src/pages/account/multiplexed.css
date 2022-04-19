@@ -24,7 +24,7 @@ video#video {
 
 .box {
     display: flex;
-    min-width: 60%;
+    min-width: 50%;
     min-height: calc((100% - 58px) * 0.6);
     background-color: white;
 }

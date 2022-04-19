@@ -10,17 +10,26 @@ import App from './App.vue'
 import Store from './vuex/store.js'
 import Router from './router/router.js'
 import * as icons from '@element-plus/icons-vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faAudioDescription, faCircle, faBugs } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {
+    faAudioDescription,
+    faBugs,
+    faCircle,
+    faCommentAlt,
+    faPlus,
+    faStar,
+    faThumbsUp
+} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 
 const app = createApp(App)
 
-// 注册Icons 全局组件
+// 注册全局组件
 Object.values(icons).forEach(component => {
     app.component(component.name, component)
 })
-library.add(faAudioDescription, faCircle, faBugs)
+
+library.add(faAudioDescription, faCircle, faBugs, faStar, faPlus, faThumbsUp, faCommentAlt)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(I18n)
 app.use(Store)

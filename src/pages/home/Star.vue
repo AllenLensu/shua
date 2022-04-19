@@ -17,6 +17,7 @@ const closeHandler = (key: string, keyPath: string[]) => {
 
 onMounted(async () => {
   tags.value = await findStarTags()
+
   console.log(tags.value)
 })
 

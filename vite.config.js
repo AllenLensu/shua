@@ -26,6 +26,12 @@ export default defineConfig({
                 // changeOrigin: false,
                 // ws: false,
                 rewrite: (path) => path.replace(/^\/api/, '')
+            },
+            '^/avatar': {
+                target: "http://localhost:11010/",
+                // changeOrigin: false,
+                // ws: false,
+                rewrite: (path) => path.replace(/^\/avatar/, '')
             }
         }
     },

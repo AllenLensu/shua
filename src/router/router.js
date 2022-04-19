@@ -24,10 +24,6 @@ const router = createRouter({
                     path: 'content/:pid/:id',
                     props: true,
                     component: () => import('../pages/home/content/Content.vue')
-                },
-                {
-                    path: 'post',
-                    component: () => import('../pages/editer/Editer.vue')
                 }
             ]
         },

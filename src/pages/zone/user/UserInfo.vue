@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {computed, reactive, ref} from "vue";
-import {findUserInfo} from "../../../configs/services";
+import {reactive} from "vue";
+import {findUserInfo} from "../../../configs/services.js";
 
 const userInfoForm = reactive({
   username: '',
   gender: '',
   birthday: '',
-  age: '',
+  age: 0,
   resident: '',
   household: '',
   signature: '',
@@ -15,6 +15,7 @@ const userInfoForm = reactive({
 
 (async () => {
   const response = await findUserInfo()
+  console.log(response.data)
   // userInfo.value = response.data
   userInfoForm.username = response.data.username;
   userInfoForm.gender = response.data.gender ? 'MALE' : 'FEMALE';
@@ -29,10 +30,10 @@ const userInfoForm = reactive({
 
 <template>
   <el-form ref="formRef" :model="userInfoForm" label-position="left" label-width="8vw">
-    <el-form-item :label='$t(`manage.name`)'>
+    <el-form-item :label='$t(`accountAttr.username`)'>
       <el-input v-model="userInfoForm.username" disabled style="width: 25vw"></el-input>
     </el-form-item>
-    <el-form-item :label='$t(`manage.sex`)'>
+    <el-form-item :label='$t(`accountAttr.gender`)'>
       <el-select
           v-model="userInfoForm.gender"
           disabled
@@ -43,7 +44,7 @@ const userInfoForm = reactive({
         <el-option label="女" value="FEMALE"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item :label='$t(`manage.birthday`)'>
+    <el-form-item :label='$t(`accountAttr.birthday`)'>
       <el-date-picker
           v-model="userInfoForm.birthday"
           disabled
@@ -52,7 +53,7 @@ const userInfoForm = reactive({
           type="date"
       ></el-date-picker>
     </el-form-item>
-    <el-form-item :label='$t(`manage.age`)'>
+    <el-form-item :label='$t(`accountAttr.age`)'>
       <el-input-number
           v-model="userInfoForm.age"
           :max="199"
@@ -62,16 +63,16 @@ const userInfoForm = reactive({
           style="width: 25vw"
       />
     </el-form-item>
-    <el-form-item :label='$t(`manage.resident`)'>
+    <el-form-item :label='$t(`accountAttr.resident`)'>
       <el-input v-model="userInfoForm.resident" disabled style="width: 25vw"></el-input>
     </el-form-item>
-    <el-form-item :label='$t(`manage.household`)'>
+    <el-form-item :label='$t(`accountAttr.household`)'>
       <el-input v-model="userInfoForm.household" disabled style="width: 25vw"></el-input>
     </el-form-item>
-    <el-form-item :label='$t(`manage.signature`)'>
+    <el-form-item :label='$t(`accountAttr.signature`)'>
       <el-input v-model="userInfoForm.signature" disabled style="width: 25vw" type="text"></el-input>
     </el-form-item>
-    <el-form-item :label='$t(`manage.introduction`)'>
+    <el-form-item :label='$t(`accountAttr.introduction`)'>
       <el-input v-model="userInfoForm.introduction" disabled resize="none" rows="5" style="width: 25vw"
                 type="textarea"></el-input>
     </el-form-item>

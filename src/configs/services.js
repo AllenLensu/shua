@@ -1,4 +1,4 @@
-import request from "umi-request";
+import request from "./request";
 
 export async function accountVerify(account) {
     let requestBody = new FormData();
@@ -60,11 +60,21 @@ export async function findStarTags() {
     })
 }
 
-export async function register(avatar) {
-    let requestBody = new FormData();
-    requestBody.append('file', avatar);
-    return await request.post(`/api/reg/avatar`, {
+export async function register(requestBody) {
+    return await request.post(`/api/reg`, {
         requestType: 'form',
         data: requestBody
+    })
+}
+
+export async function findAllIcons() {
+    return await request(`/api/menu/all`, {
+        methods: 'GET'
+    })
+}
+
+export async function findUserAccountInfo() {
+    return await request(`/api/account/profile`, {
+        methods: 'GET'
     })
 }

@@ -7,7 +7,7 @@ const store = useStore();
 const stepCurrentActive = ref((computed(() => store.state.register.steps)).value)
 watch(
     () => (computed(() => store.state.register.steps)).value,
-    async params => {
+    async value => {
       stepCurrentActive.value = (computed(() => store.state.register.steps)).value
     }
 )
@@ -22,9 +22,9 @@ watch(
   <el-container class="container">
     <div class="box register page">
       <el-steps :active="stepCurrentActive" finish-status="success" process-status="finish" simple>
-        <el-step title="账户录入"></el-step>
-        <el-step title="完善信息"></el-step>
-        <el-step title="完成注册"></el-step>
+        <el-step :title="$t(`hint.initAccount`)"></el-step>
+        <el-step :title="$t(`hint.improveAccount`)"></el-step>
+        <el-step :title="$t(`hint.finishAccount`)"></el-step>
       </el-steps>
       <router-view></router-view>
     </div>

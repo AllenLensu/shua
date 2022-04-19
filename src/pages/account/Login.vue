@@ -1,15 +1,23 @@
 <script lang="ts" setup>
-import {ref, reactive} from 'vue'
+import {computed, reactive, ref} from 'vue'
 import type {ElForm} from 'element-plus'
 import {accountVerify} from '../../configs/services.js'
 import {useRouter} from 'vue-router'
+import {useStore} from "vuex";
 import './multiplexed.css'
 
 const ruleFormRef = ref<InstanceType<typeof ElForm>>()
+const router = useRouter();
+const store = useStore();
 
-const router = useRouter()
+(async () => {
+  const isLogin = computed(() => store.state.currentUser.value)
+  if (isLogin.value) {
+    router.push('/zone')
+  }
+})()
 
-const checkId = (rule: any, value: any, callback: any) => {
+const validateId = (rule: any, value: any, callback: any) => {
   if (!value) {
     return callback(new Error('Please input the id'))
   }
@@ -29,13 +37,13 @@ const validatePass = (rule: any, value: any, callback: any) => {
 }
 
 const ruleForm = reactive({
-  gender: '',
+  password: '',
   username: '',
 })
 
 const rules = reactive({
-  gender: [{validator: validatePass, trigger: 'blur'}],
-  username: [{validator: checkId, trigger: 'blur'}],
+  password: [{validator: validatePass, trigger: 'blur'}],
+  username: [{validator: validateId, trigger: 'blur'}],
 })
 
 const submitForm = async (formEl: InstanceType<typeof ElForm> | undefined) => {
@@ -43,13 +51,11 @@ const submitForm = async (formEl: InstanceType<typeof ElForm> | undefined) => {
   const isValid = await formEl.validate()
   if (isValid) {
     try {
-      let result = await accountVerify(ruleForm)
-      if (result.name == "success") {
-        await router.push('/zone')
-      } else {
-        alert("用户名或密码错误")
-      }
+      await accountVerify(ruleForm)
+      await store.dispatch('loadCurrentUser')
+      router.push('/zone')
     } catch (e) {
+      alert("用户名或密码错误")
       console.error(e)
     }
   }
@@ -80,21 +86,24 @@ const router2Register = () => {
           status-icon
       >
         <el-form-item prop="id">
-          <el-input v-model.number="ruleForm.username" :placeholder="$t(`account.id`)"></el-input>
+          <el-input v-model.number="ruleForm.username" :placeholder="$t(`placeholder.uid`)"></el-input>
         </el-form-item>
-        <p>{{ ruleForm.gender }}</p>
+        <p>{{ ruleForm.password }}</p>
         <el-form-item prop="password">
           <el-input
-              v-model="ruleForm.gender"
-              :placeholder="$t(`account.password`)"
+              v-model="ruleForm.password"
+              :placeholder="$t(`placeholder.password`)"
               autocomplete="off"
               type="password"
           ></el-input>
         </el-form-item>
         <div class="box button-arrange">
-          <el-button class="font global" type="primary" @click="router2Register">{{ $t(`navigation.account.signup`) }}</el-button>
+          <el-button class="font global" type="primary" @click="router2Register">{{ $t(`config.register`) }}</el-button>
           <el-button class="font global" @click="resetForm(ruleFormRef)">{{ $t(`config.reset`) }}</el-button>
-          <el-button class="font global" type="primary" @click="submitForm(ruleFormRef)">{{ $t(`config.submit`) }}</el-button>
+          <el-button class="font global" type="primary" @click="submitForm(ruleFormRef)">{{
+              $t(`config.submit`)
+            }}
+          </el-button>
         </div>
       </el-form>
     </div>

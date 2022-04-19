@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {UserFilled} from '@element-plus/icons-vue'
+import {useStore} from "vuex";
+import {logout} from "../configs/services.js";
+import {useRouter} from "vue-router";
 
 const {locale} = useI18n()
-const activeIndex = ref('/')
-
-const handleNav = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+const store = useStore()
+const router = useRouter()
+const accountLevel = ref(0)
 
 const toggle = () => {
   if (locale.value == 'zh_CN') {
@@ -16,7 +17,18 @@ const toggle = () => {
   } else {
     locale.value = 'zh_CN'
   }
+  store.dispatch("toggleLang")
 }
+
+const loginOut = async () => {
+  await logout()
+  await store.dispatch('clearCurrentUser')
+  router.push('/account')
+}
+
+const currentUser = computed(() => store.state.currentUser.value)
+const accountInfo = computed(() => store.state.currentUser.profile)
+
 </script>
 
 <template>
@@ -30,21 +42,20 @@ const toggle = () => {
       <div class="menu">
         <div class="grid-content">
           <el-menu
-              :default-active="activeIndex"
               :router="true"
               class="el-menu-horizontal"
               mode="horizontal"
-              @select="handleNav"
           >
-            <el-menu-item index="1" route="/">{{ $t(`navigation.home`) }}</el-menu-item>
-            <el-menu-item index="2" route="/zone">
-              {{ $t(`zone.zone`) }}
+            <el-menu-item index="/" route="/">{{ $t(`navigation.home`) }}</el-menu-item>
+            <el-menu-item index="/chat" route="/chat">{{ $t(`navigation.chat`) }}</el-menu-item>
+            <el-menu-item index="/zone" route="/zone">
+              {{ $t(`navigation.zone`) }}
             </el-menu-item>
           </el-menu>
         </div>
       </div>
       <el-popover
-          :content="$t(`language.more`)"
+          :content="$t(`tip.langList`)"
           :show-arrow="false"
           :title="$t(`language.title`)"
           :width="200"
@@ -59,16 +70,32 @@ const toggle = () => {
       </el-popover>
       <router-link to="/account">
         <el-popover
+            :content="$t(`tip.wait4support`)"
             :show-arrow="false"
-            :title="$t(`account.account`)"
-            :content="$t(`language.more`)"
+            :title="$t(`hint.account`)"
             :width="200"
             placement="bottom"
             trigger="hover"
         >
+          <template v-if="currentUser">
+            <el-space direction="vertical">
+              {{ currentUser.username }}
+              <el-progress
+                  :percentage="50"
+                  :stroke-width="20"
+                  :text-inside="true">
+                <el-button type="text">Content</el-button>
+              </el-progress>
+              <el-button @click="loginOut">登出</el-button>
+            </el-space>
+          </template>
+          <template v-else>
+            尚未登录
+          </template>
           <template #reference>
             <div class="account">
-              <el-avatar :fit="`fill`" :icon="UserFilled" :size="32" shape="circle"></el-avatar>
+              <el-avatar :fit="`fill`" :icon="UserFilled" :size="32" :src="currentUser?.avatar"
+                         shape="circle"></el-avatar>
             </div>
           </template>
         </el-popover>

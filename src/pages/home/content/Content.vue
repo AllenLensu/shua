@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Card from "../../../components/global/Card.vue";
-import CreatePost from "../../../components/post/createPost.vue";
+import CreatePost from "../../../components/post/editor.vue";
 import {ref, watch} from "vue";
 import {findPosts} from "../../../configs/services.js";
 import {useRoute} from "vue-router";
@@ -11,6 +11,8 @@ const props = defineProps<{
   id?: string
 }>()
 const postList = ref([])
+const postListLoading = ref(false);
+const postListError = ref(null)
 const postCalc = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -23,10 +25,17 @@ const handleCurrentChange = (val: number) => {
 
 // 当参数更改时获取用户信息
 (async () => {
-  const {id: menuId = '0', pid: parentMenuId} = route.params
-  postList.value = await findPosts(menuId)
-  totalPost.value = postList.value.length
-  postCalc.value = postList.value.slice(0, pageSize.value + 1)
+  try {
+    const {id: menuId = '0', pid: parentMenuId} = route.params
+    postListLoading.value = true
+    postList.value = await findPosts(menuId)
+    postListLoading.value = false
+    totalPost.value = postList.value.length
+    postCalc.value = postList.value.slice(0, pageSize.value + 1)
+  } catch (e) {
+    postListLoading.value = false
+    postListError.value = e
+  }
 })()
 
 // 当参数更改时获取用户信息
@@ -39,15 +48,17 @@ watch(
       postCalc.value = postList.value.slice(0, pageSize.value + 1)
     }
 )
+
 </script>
 
 <template>
   <CreatePost/>
   <h6/>
+  <el-space direction="vertical" :size="20">
   <div v-for="post in postCalc" :key="post.contentid">
     <Card :post="post"/>
-    <h6/>
   </div>
+  </el-space>
   <ElPagination
       v-model:currentPage="currentPage"
       v-model:page-size="pageSize"

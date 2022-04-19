@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {findMenusWithChildren} from '../../configs/services.js'
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {useRoute} from "vue-router";
 
 interface SubMenu {
@@ -17,20 +17,13 @@ interface Menu extends SubMenu {
 
 const route = useRoute();
 const menus = ref<Menu[]>([])
+const scrollBarHeight = ref(window.innerHeight - 60)
+const isCollapse = ref((window.outerWidth / window.outerHeight < 1) ? true : (window.outerWidth < 768))
+const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px')
 
 onMounted(async () => {
   menus.value = await findMenusWithChildren()
 })
-
-
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-
 
 const {id: menuId = '1', pid: parentMenuId} = route.params
 
@@ -45,28 +38,49 @@ const getActiveIndex = (): string => {
   }
 }
 
+function resize() {
+  scrollBarHeight.value = window.innerHeight - 60;
+  let woWidth = window.outerWidth;
+  let woHeight = window.outerHeight;
+  if (woWidth / woHeight < 1) {
+    isCollapse.value = true
+  } else {
+    isCollapse.value = woWidth < 768;
+  }
+  if (isCollapse.value) {
+    sidMenuWidth.value = '60px'
+  } else {
+    sidMenuWidth.value = '200px'
+  }
+}
+
+addEventListener("resize", resize)
+
+onUnmounted(() => {
+  removeEventListener("resize", resize)
+})
+
 </script>
 
 <template>
   <el-container>
-    <el-aside width="200px">
-      <el-scrollbar max-height="90vh">
+    <el-aside :width="sidMenuWidth">
+      <el-scrollbar :max-height="scrollBarHeight" :noresize="true">
         <el-menu
+            :collapse="isCollapse"
             :default-active="getActiveIndex()"
             :default-openeds="parentMenuId ? [parentMenuId] : []"
             :router="true"
-            @close="handleClose"
-            @open="handleOpen"
         >
           <el-menu-item index="home" route="/">
             <el-icon>
-              <FullScreen />
+              <FullScreen/>
             </el-icon>
             <span>首页</span>
           </el-menu-item>
           <el-menu-item index="star" route="/star">
             <el-icon>
-              <Star />
+              <Star/>
             </el-icon>
             <span>心选</span>
           </el-menu-item>
@@ -105,7 +119,7 @@ const getActiveIndex = (): string => {
         </el-menu>
       </el-scrollbar>
     </el-aside>
-    <el-scrollbar max-height="90vh" style="width: 100%;">
+    <el-scrollbar :max-height="scrollBarHeight" style="width: 100%;">
       <el-main>
         <router-view></router-view>
       </el-main>

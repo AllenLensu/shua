@@ -1,0 +1,85 @@
+{
+  "accountAttr": {
+    "age": "Age",
+    "avatar": "Avatar",
+    "birthday": "Birthday",
+    "email": "E-Mail",
+    "firstname": "First Name",
+    "gender": "Gender",
+    "household": "Household",
+    "introduction": "Introduction",
+    "lastname": "Last Name",
+    "name": "Name",
+    "password": "Password",
+    "phone": "Phone",
+    "resident": "Resident",
+    "sex": {
+      "female": "Female",
+      "male": "Male"
+    },
+    "signature": "Signature",
+    "username": "Username",
+    "uuid": "UUID"
+  },
+  "config": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "comment": "Comment",
+    "confirm": "Confirm",
+    "detail": "Details",
+    "edit": "Edit",
+    "follow": "Follow",
+    "login": "Sign In",
+    "next": "Next",
+    "operation": "Operations",
+    "prev": "Prev",
+    "register": "Sign Up",
+    "reset": "Reset",
+    "select": "Select",
+    "send": "Send",
+    "star": "Star",
+    "submit": "Submit",
+    "thumbsup": "Like",
+    "unfollow": "Unfollow",
+    "unstar": "Unstar"
+  },
+  "hint": {
+    "account": "Account",
+    "finishAccount": "Finish",
+    "improveAccount": "Complete Information",
+    "initAccount": "Initialize Account",
+    "uploadAvatar": "Upload Avatar",
+    "uploadPost": "Send Post"
+  },
+  "language": {
+    "America": "American English(en-US)",
+    "China": "简体中文(zh-CN)",
+    "language": "Language",
+    "title": "Language Switcher"
+  },
+  "navigation": {
+    "chat": "Chat",
+    "home": "Home",
+    "login": "Log In",
+    "setting": "Settings",
+    "signup": "Sign Up",
+    "zone": "SZone"
+  },
+  "placeholder": {
+    "password": "Please input your password here",
+    "postContent": "Please input",
+    "uid": "Please input your username here"
+  },
+  "tip": {
+    "avatarFormat": "Avatar picture must be JPG or PNG format!",
+    "avatarSize": "Avatar picture size can not exceed 2MB!",
+    "bugs": "YaHoo, you can get some rest!",
+    "congratulation": "Congratulations",
+    "langList": "English and Chinese",
+    "success": "Success",
+    "tip": "Tips",
+    "unImplement": "SORRY! TODO IMPLEMENT!",
+    "wait4support": "More are waiting for supporting",
+    "welcome": "Welcome"
+  }
+}
