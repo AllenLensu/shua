@@ -40,8 +40,8 @@ const getActiveIndex = (): string => {
 
 function resize() {
   scrollBarHeight.value = window.innerHeight - 60;
-  let woWidth = window.outerWidth;
-  let woHeight = window.outerHeight;
+  let woWidth = window.innerWidth;
+  let woHeight = window.innerHeight;
   if (woWidth / woHeight < 1) {
     isCollapse.value = true
   } else {
@@ -64,7 +64,7 @@ onUnmounted(() => {
 
 <template>
   <el-container>
-    <el-aside :width="sidMenuWidth">
+    <el-aside :width="sidMenuWidth" class="aside-transition">
       <el-scrollbar :max-height="scrollBarHeight" :noresize="true">
         <el-menu
             :collapse="isCollapse"
@@ -135,5 +135,13 @@ onUnmounted(() => {
 
 .el-menu :deep {
   border-right: 0
+}
+
+.aside-transition {
+  transition: background-color .5s,opacity .25s,transform .5s cubic-bezier(.19,1,.22,1);
+  transition-property: background-color, opacity, transform;
+  transition-duration: 0.5s, 0.25s, 0.5s;
+  transition-timing-function: ease, ease, cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: 0s, 0s, 0s;
 }
 </style>

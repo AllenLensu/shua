@@ -47,7 +47,9 @@
     "account": "Account",
     "finishAccount": "Finish",
     "improveAccount": "Complete Information",
+    "information": "Information",
     "initAccount": "Initialize Account",
+    "starSetting": "Star Setting",
     "uploadAvatar": "Upload Avatar",
     "uploadPost": "Send Post"
   },
@@ -58,11 +60,16 @@
     "title": "Language Switcher"
   },
   "navigation": {
+    "accountInfo": "Account Info",
+    "centre": "Personal Center",
     "chat": "Chat",
     "home": "Home",
     "login": "Log In",
+    "manage": "Manage",
     "setting": "Settings",
     "signup": "Sign Up",
+    "starall": "Star All",
+    "userInfo": "User Info",
     "zone": "SZone"
   },
   "placeholder": {

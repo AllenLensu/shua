@@ -13,7 +13,7 @@ const router = createRouter({
                 },
                 {
                     path: 'star',
-                    component: () => import('../pages/home/Star.vue')
+                    component: () => import('../pages/zone/setting/star/StarSetting.vue')
                 },
                 {
                     path: 'content/:id',
@@ -66,6 +66,12 @@ const router = createRouter({
                 }, {
                     path: 'manage',
                     component: () => import('../pages/zone/manage/Manage.vue')
+                }, {
+                    path: 'setting',
+                    component: () => import('../pages/zone/setting/BaseSetting.vue')
+                }, {
+                    path: 'star',
+                    component: () => import('../pages/zone/setting/star/StarSetting.vue')
                 }
             ]
         }

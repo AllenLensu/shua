@@ -3,10 +3,12 @@ import {HomeFilled, Management, Menu as IconMenu, Setting} from '@element-plus/i
 import {useRoute, useRouter} from 'vue-router'
 import {computed, onUnmounted, ref} from "vue";
 import {useStore} from "vuex";
+import {useI18n} from "vue-i18n";
 
 const router = useRouter();
 const route = useRoute();
 const store = useStore();
+const {t} = useI18n()
 const isAdmin = computed(() => store.state.currentUser.value?.accountRole)
 const isCollapse = ref((window.outerWidth / window.outerHeight < 1) ? true : (window.outerWidth < 768));
 const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px');
@@ -19,15 +21,20 @@ const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px');
 })()
 
 const getActiveIndex = (): string => {
+  //TODO IMPLEMENT
   switch (route.fullPath) {
     case '/zone/':
+      return 'zone'
+    case '/zone':
       return 'zone'
     case '/zone/user/info':
       return 'user/info'
     case '/zone/manage':
       return 'manage'
+    case '/zone/setting':
+      return 'setting'
     default:
-      return 'zone'
+      return 'setting'
   }
 }
 
@@ -66,27 +73,27 @@ onUnmounted(() => {
             <el-icon>
               <HomeFilled/>
             </el-icon>
-            <span>主页</span>
+            <span>{{ $t(`navigation.home`) }}</span>
           </el-menu-item>
           <el-sub-menu index="user">
             <template #title>
               <el-icon>
                 <icon-menu/>
               </el-icon>
-              <span>个人中心</span>
+              <span>{{ $t(`navigation.centre`) }}</span>
             </template>
-            <el-menu-item-group title="资料">
-              <el-menu-item index="user/info" route="/zone/user/info">个人信息</el-menu-item>
-              <el-menu-item disabled index="2-2">账户信息</el-menu-item>
+            <el-menu-item-group :title="t(`hint.information`)">
+              <el-menu-item index="user/info" route="/zone/user/info">{{ $t(`navigation.userInfo`) }}</el-menu-item>
+              <el-menu-item index="account/info" route="/error">{{ $t(`navigation.accountInfo`) }}</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-menu-item v-if="!(!!isAdmin)" index="manage" route="/zone/manage">
             <el-icon>
               <Management/>
             </el-icon>
-            <span>管理</span>
+            <span>{{ $t(`navigation.manage`) }}</span>
           </el-menu-item>
-          <el-menu-item disabled index="setting">
+          <el-menu-item index="setting" route="/zone/setting">
             <el-icon>
               <Setting/>
             </el-icon>

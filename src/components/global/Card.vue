@@ -77,11 +77,6 @@ const errorHandler = () => {
 </template>
 
 <style scoped>
-button {
-  font-family: YKH55, vivoL, sans-serif;
-  font-size: 14px;
-}
-
 .card-header-plus {
   display: flex;
   justify-content: flex-start;

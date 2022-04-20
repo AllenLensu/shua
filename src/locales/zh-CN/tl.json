@@ -47,7 +47,9 @@
     "account": "账户",
     "finishAccount": "完成注册",
     "improveAccount": "完善信息",
+    "information": "资料",
     "initAccount": "账户录入",
+    "starSetting": "星选设置",
     "uploadAvatar": "上传头像",
     "uploadPost": "发布帖子"
   },
@@ -58,11 +60,16 @@
     "title": "语言切换"
   },
   "navigation": {
+    "accountInfo": "账户信息",
+    "centre": "个人中心",
     "chat": "聊天",
     "home": "主页",
     "login": "登录",
+    "manage": "管理",
     "setting": "设置",
     "signup": "注册",
+    "starall": "关注全部",
+    "userInfo": "用户信息",
     "zone": "空间"
   },
   "placeholder": {

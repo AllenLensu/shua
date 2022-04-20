@@ -25,18 +25,23 @@ onMounted(async () => {
 
 <template>
   <el-scrollbar style="padding-bottom: 12px">
-    <el-space>
-      <el-tag
-          v-for="item in tags"
-          :key="item.name"
-          class="mx-1"
-          closable
-          effect="dark"
-          type=""
-          @close="closeHandler"
+    <el-space direction="vertical">
+      <div
+          v-for=""
       >
-        {{ item.tag }}
-      </el-tag>
+
+        <el-tag
+            v-for="item in tags"
+            :key="item.name"
+            class="mx-1"
+            closable
+            effect="dark"
+            type=""
+            @close="closeHandler"
+        >
+          {{ item.tag }}
+        </el-tag>
+      </div>
     </el-space>
   </el-scrollbar>
 </template>
