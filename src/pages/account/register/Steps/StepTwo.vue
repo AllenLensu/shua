@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {reactive, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import type {ElForm} from "element-plus";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
@@ -15,6 +15,13 @@ const prevPage = async () => {
   await store.dispatch("stepDecrement");
   router.push("/register");
 };
+
+(async () => {
+  const isLogin = computed(() => store.state.currentUser.value)
+  if (isLogin.value) {
+    router.go(-1)
+  }
+})()
 
 const storedBirthday = localStorage.getItem("register-birthday");
 

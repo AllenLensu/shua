@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Card from "../../../components/global/Card.vue";
-import CreatePost from "../../../components/post/editor.vue";
 import {ref, watch} from "vue";
 import {findPosts} from "../../../configs/services.js";
 import {useRoute} from "vue-router";
+import CreatePost from "../../../components/global/CreatePost.vue";
 
 const route = useRoute()
 const props = defineProps<{
@@ -16,7 +16,7 @@ const postListError = ref(null)
 const postCalc = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
-const totalPost = ref(0)
+const totalPost = ref(0);
 
 const handleCurrentChange = (val: number) => {
   console.log(`current page: ${val}`)
@@ -54,11 +54,12 @@ watch(
 <template>
   <CreatePost/>
   <h6/>
-  <el-space direction="vertical" :size="20">
-  <div v-for="post in postCalc" :key="post.contentid">
-    <Card :post="post"/>
-  </div>
+  <el-space :size="20" direction="vertical" fill>
+    <div v-for="post in postCalc" :key="post.contentid">
+      <Card :post="post"/>
+    </div>
   </el-space>
+  <h6/>
   <ElPagination
       v-model:currentPage="currentPage"
       v-model:page-size="pageSize"
@@ -71,5 +72,4 @@ watch(
 </template>
 
 <style scoped>
-
 </style>

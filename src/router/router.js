@@ -13,7 +13,7 @@ const router = createRouter({
                 },
                 {
                     path: 'star',
-                    component: () => import('../pages/zone/setting/star/StarSetting.vue')
+                    component: () => import('../pages/home/Star.vue')
                 },
                 {
                     path: 'content/:id',
@@ -72,6 +72,24 @@ const router = createRouter({
                 }, {
                     path: 'star',
                     component: () => import('../pages/zone/setting/star/StarSetting.vue')
+                }
+            ]
+        },
+        {
+            path: '/editor',
+            component: () => import('../pages/editor/editor.vue')
+        },
+        {
+            path: '/chat',
+            component: () => import('../pages/chat/BaseChat.vue'),
+            children: [
+                {
+                    path: ':username/:id',
+                    component: () => import('../pages/chat/ChatRoom.vue')
+                },
+                {
+                    path: '',
+                    component: () => import('../pages/chat/ChatRoom.vue')
                 }
             ]
         }

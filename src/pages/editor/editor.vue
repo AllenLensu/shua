@@ -1,31 +1,59 @@
 <script lang="ts" setup>
-import {checkAuthentication} from '../../configs/services.js'
+import {addPost, findTags} from '../../configs/services.js'
 import {useRouter} from "vue-router";
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useI18n} from "vue-i18n";
 import Vditor from 'vditor';
 import './index.css';
+import {useStore} from "vuex";
+import {ArrowLeft} from "@element-plus/icons-vue";
+import aMessageBox from "../../components/box/tipBox.ts";
+
+interface SubTag {
+  value: number;
+  label: string;
+}
+
+interface Tag extends SubTag {
+  children?: SubTag[];
+}
 
 const vditor = ref<Vditor | null>(null);
-let verifyInfo = ref<any>();
+const tags = ref<Tag[]>([])
+const store = useStore();
 const router = useRouter();
+const contentTypeRef = ref([])
 const {t} = useI18n();
+const cascaderAttr = {
+  expandTrigger: 'hover',
+}
+const handleBack = () => {
+  router.go(-1)
+}
 
 const sendButton = async () => {
-  try {
-    verifyInfo = await checkAuthentication()
-  } catch (e) {
-    router.push('/account')
+  if (!contentTypeRef.value) {
+    return await aMessageBox(t(`tip.error`), t(`tip.finishArea`), t(`config.confirm`))
+  } else {
+    const verifyInfo = computed(() => store.state.currentUser.value)
+    if (!verifyInfo.value) {
+      router.push('/account')
+    } else {
+      const response = await addPost(vditor.value.getValue(), contentTypeRef.value)
+      if (response.success) {
+        localStorage.removeItem('temPost')
+        router.go(0)
+      }
+    }
   }
 }
 
 onMounted(() => {
   vditor.value = new Vditor('vditor', {
     icon: 'ant',
-    height: 300,
     placeholder: t(`placeholder.postContent`),
     after: () => {
-      const content = localStorage.getItem('temPost')
+      const content = localStorage.getItem('temPost') ?? ''
       if (content) {
         vditor.value!.setValue(content);
       }
@@ -84,29 +112,48 @@ onMounted(() => {
     },
   });
 });
+
+onMounted(async () => {
+  tags.value = await findTags();
+})
 </script>
 
 <template>
-  <div style="margin-bottom: 20px;">
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>{{ $t(`hint.uploadPost`) }}</span>
-          <el-button class="main-button icon-button" type="primary" @click="sendButton">
-            {{ $t(`config.send`) }}
-          </el-button>
-        </div>
-      </template>
-      <div id="vditor"/>
-    </el-card>
+  <div class="global-position-fix">
+    <el-page-header :content="t(`hint.uploadPost`)" :icon="ArrowLeft" :title="t(`config.back`)" @back="handleBack"/>
+    <h6/>
+    <div class="card-header">
+      <el-space wrap>
+        <el-cascader
+            v-model="contentTypeRef"
+            :options="tags"
+            :placeholder="$t(`placeholder.selectTag`)"
+            :props="cascaderAttr"
+            clearable
+        />
+      </el-space>
+      <el-button class="main-button icon-button" type="primary" @click="sendButton">
+        {{ $t(`config.send`) }}
+      </el-button>
+    </div>
+    <div id="vditor"/>
   </div>
 </template>
 
 <style scoped>
+.global-position-fix {
+  margin-top: 5vh;
+  margin-left: 10%;
+  margin-right: 10%;
+  min-width: 500px;
+}
+
 .card-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+  margin-top: -50px;
+  margin-bottom: 24px;
 }
 
 .main-button {

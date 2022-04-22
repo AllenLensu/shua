@@ -2,7 +2,7 @@
 import {computed, reactive, ref} from 'vue'
 import type {ElForm} from 'element-plus'
 import {accountVerify} from '../../configs/services.js'
-import {useRouter} from 'vue-router'
+import {onBeforeRouteLeave, onBeforeRouteUpdate, useRouter} from 'vue-router'
 import {useStore} from "vuex";
 import './multiplexed.css'
 
@@ -13,7 +13,7 @@ const store = useStore();
 (async () => {
   const isLogin = computed(() => store.state.currentUser.value)
   if (isLogin.value) {
-    router.push('/zone')
+    router.go(-1)
   }
 })()
 
@@ -53,7 +53,7 @@ const submitForm = async (formEl: InstanceType<typeof ElForm> | undefined) => {
     try {
       await accountVerify(ruleForm)
       await store.dispatch('loadCurrentUser')
-      router.push('/zone')
+      router.go(-1)
     } catch (e) {
       alert("用户名或密码错误")
       console.error(e)
@@ -69,6 +69,15 @@ const resetForm = (formEl: InstanceType<typeof ElForm> | undefined) => {
 const router2Register = () => {
   router.push('/register')
 }
+
+onBeforeRouteLeave((to, from) => {
+  if (to.path == '/register/finish' && from.path == '/account') {
+    return false
+  }
+  if (to.path == '/register/improve' && from.path == '/account') {
+    return false
+  }
+})
 </script>
 
 <template>

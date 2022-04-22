@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import type {UploadFile, UploadInstance, UploadProps, UploadRawFile,} from "element-plus";
-import {ElMessage, genFileId} from "element-plus";
+import {ElForm, ElMessage, genFileId} from "element-plus";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
 import "../../multiplexed.css";
-import aMessageBox from "../../../../components/box/requireImplement";
+import aMessageBox from "../../../../components/box/tipBox.ts";
 import {useI18n} from "vue-i18n";
-import {register} from "../../../../configs/services.js";
+import {register, registerDirectVerify} from "../../../../configs/services.js";
 
 const router = useRouter();
 const store = useStore();
@@ -15,6 +15,13 @@ const {t} = useI18n();
 const imageUrl = ref("");
 const uploadRef = ref<UploadInstance>();
 const uploadRawFile = ref<UploadRawFile>();
+
+(async () => {
+  const isLogin = computed(() => store.state.currentUser.value)
+  if (isLogin.value) {
+    router.go(-1)
+  }
+})()
 
 const router2Login = () => {
   router.push("/account");
@@ -61,7 +68,8 @@ const submitUpload = async () => {
   requestBody.append("age", localStorage.getItem("register-age"));
   let response = await register(requestBody);
   if (response.success) {
-    router.push("/account")
+    await registerDirectVerify(localStorage.getItem("register-username"), localStorage.getItem("register-password"))
+    window.location.href = '/'
     localStorage.removeItem("register-username")
     localStorage.removeItem("register-password")
     localStorage.removeItem("register-gender")

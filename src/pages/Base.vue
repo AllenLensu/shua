@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n'
 import {UserFilled} from '@element-plus/icons-vue'
 import {useStore} from "vuex";
 import {logout} from "../configs/services.js";
-import {useRouter} from "vue-router";
+import {onBeforeRouteLeave, useRouter} from "vue-router";
 
 const {locale} = useI18n()
 const store = useStore()
@@ -79,13 +79,8 @@ const accountInfo = computed(() => store.state.currentUser.profile)
         >
           <template v-if="currentUser">
             <el-space direction="vertical">
-              {{ currentUser.username }}
-              <el-progress
-                  :percentage="50"
-                  :stroke-width="20"
-                  :text-inside="true">
-                <el-button type="text">Content</el-button>
-              </el-progress>
+              <p>欢迎你，{{ currentUser.username }}</p>
+              <p>经验值：{{ accountInfo.experience }}</p>
               <el-button @click="loginOut">登出</el-button>
             </el-space>
           </template>

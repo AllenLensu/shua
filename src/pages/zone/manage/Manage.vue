@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import {findAllUser} from "../../../configs/services.js";
 import {useI18n} from 'vue-i18n'
-import aMessageBox from '../../../components/box/requireImplement.ts'
+import aMessageBox from '../../../components/box/tipBox.ts'
 
 const userInfo = ref([]);
 const {t} = useI18n()

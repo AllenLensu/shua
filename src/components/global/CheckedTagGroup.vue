@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {defineProps, ref} from "vue";
 import CheckedTag from "./CheckedTag.vue";
-import aMessageBox from "../box/requireImplement";
+import aMessageBox from "../box/tipBox.ts";
 import {useI18n} from "vue-i18n";
 
 const {t} = useI18n()

@@ -2,8 +2,18 @@
 import '../multiplexed.css'
 import {computed, ref, watch} from "vue";
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 
 const store = useStore();
+const router = useRouter();
+
+(async () => {
+  const isLogin = computed(() => store.state.currentUser.value)
+  if (isLogin.value) {
+    router.go(-1)
+  }
+})()
+
 const stepCurrentActive = ref((computed(() => store.state.register.steps)).value)
 watch(
     () => (computed(() => store.state.register.steps)).value,
