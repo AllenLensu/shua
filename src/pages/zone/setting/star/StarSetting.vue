@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {onMounted, ref} from 'vue'
-import {findMenusWithChildren} from '../../../../configs/services.js'
+import {findMenusWithChildren, tagStatus} from '../../../../configs/services.js'
 import CheckedTagGroup from "../../../../components/global/CheckedTagGroup.vue";
 import {ArrowLeft} from "@element-plus/icons-vue";
 import {useI18n} from "vue-i18n";
@@ -20,10 +20,15 @@ interface Tag extends SubTag {
 const tags = ref<Tag[]>([])
 const {t} = useI18n()
 const router = useRouter()
+const tagStateRef = ref([])
 const scrollBarHeight = ref(window.innerHeight - 100)
 const handleBack = () => {
   router.go(-1)
 }
+
+(async () => {
+  tagStateRef.value = (await tagStatus()).data
+})()
 
 onMounted(async () => {
   tags.value = (await findMenusWithChildren()).filter(it => {
@@ -41,6 +46,7 @@ onMounted(async () => {
           v-for="items in tags"
           :key="items.tag"
           :tags="items"
+          :state="tagStateRef"
       />
     </el-space>
   </el-scrollbar>

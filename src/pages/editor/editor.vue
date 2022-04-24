@@ -32,18 +32,23 @@ const handleBack = () => {
 }
 
 const sendButton = async () => {
-  if (!contentTypeRef.value) {
+  console.log(vditor.value.getValue())
+  if (contentTypeRef.value.length == 0) {
     return await aMessageBox(t(`tip.error`), t(`tip.finishArea`), t(`config.confirm`))
   } else {
-    const verifyInfo = computed(() => store.state.currentUser.value)
-    if (!verifyInfo.value) {
-      router.push('/account')
-    } else {
-      const response = await addPost(vditor.value.getValue(), contentTypeRef.value)
-      if (response.success) {
-        localStorage.removeItem('temPost')
-        router.go(0)
+    if (!vditor.value.getValue()) {
+      const verifyInfo = computed(() => store.state.currentUser.value)
+      if (!verifyInfo.value) {
+        router.push('/account')
+      } else {
+        const response = await addPost(vditor.value.getValue(), contentTypeRef.value)
+        if (response.success) {
+          localStorage.removeItem('temPost')
+          router.go(0)
+        }
       }
+    } else {
+      return await aMessageBox(t(`tip.error`), t(`placeholder.postContent`), t(`config.confirm`))
     }
   }
 }

@@ -1,63 +1,50 @@
 <script lang="ts" setup>
-import {addPost, findTags} from '../../configs/services.js'
+import {addComment} from '../../configs/services.js'
 import {useRouter} from "vue-router";
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import {computed, onUnmounted, ref} from 'vue';
 import {useI18n} from "vue-i18n";
 import {useStore} from "vuex";
 import aMessageBox from "../box/tipBox.ts";
 import aMessage from "../box/tipMes.ts";
 
-interface SubTag {
-  value: number;
-  label: string;
-}
-
-interface Tag extends SubTag {
-  children?: SubTag[];
-}
-
-const tags = ref<Tag[]>([])
+const props = defineProps<{
+  postId: any,
+  ex?: any
+}>()
 const store = useStore();
 const router = useRouter();
-const contentTypeRef = ref([])
 const {t} = useI18n();
-const textAreaRef = ref(localStorage.getItem('temPost') ?? '')
-const cascaderAttr = {
-  expandTrigger: 'hover',
-}
+const textAreaRef = ref(localStorage.getItem('temComment') ?? '')
 
 const sendButton = async () => {
-  if (contentTypeRef.value.length == 0) {
-    return await aMessageBox(t(`tip.error`), t(`tip.finishArea`), t(`config.confirm`))
-  } else {
-    if (textAreaRef.value !== '') {
-      const verifyInfo = computed(() => store.state.currentUser.value)
-      if (!verifyInfo.value) {
-        router.push('/account')
-      } else {
-        const response = await addPost(textAreaRef.value, contentTypeRef.value)
-        if (response.success) {
-          localStorage.removeItem('temPost')
-          await aMessage(t(`tip.sendSuccess`))
-          router.go(0)
-        }
-      }
+  if (textAreaRef.value !== '') {
+    const verifyInfo = computed(() => store.state.currentUser.value)
+    if (!verifyInfo.value) {
+      router.push('/account')
     } else {
-      return await aMessageBox(t(`tip.error`), t(`placeholder.postContent`), t(`config.confirm`))
+      let requestBody = new FormData()
+      requestBody.append("post_id", props.postId)
+      requestBody.append("comment", textAreaRef.value)
+      if (props.ex) {
+        requestBody.append("comment_id_ex", props.ex)
+      } else {
+        requestBody.append("comment_id_ex", "0")
+      }
+      const response = await addComment(requestBody)
+      if (response.success) {
+        localStorage.removeItem('temComment')
+        await aMessage(t(`tip.sendSuccess`))
+        window.location.reload()
+      }
     }
+  } else {
+    return await aMessageBox(t(`tip.error`), t(`placeholder.postContent`), t(`config.confirm`))
   }
-}
 
-const goImprove = async () => {
-  router.push('/editor')
 }
-
-onMounted(async () => {
-  tags.value = await findTags();
-})
 
 onUnmounted(async () => {
-  localStorage.setItem('temPost', textAreaRef.value)
+  localStorage.setItem('temComment', textAreaRef.value)
 })
 </script>
 
@@ -66,18 +53,7 @@ onUnmounted(async () => {
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <el-space>
-            <el-cascader
-                v-model="contentTypeRef"
-                :options="tags"
-                :placeholder="$t(`placeholder.selectTag`)"
-                :props="cascaderAttr"
-                clearable
-            />
-            <el-button class="main-button" type="primary" @click="goImprove">
-              {{ $t(`navigation.experience`) }}
-            </el-button>
-          </el-space>
+          <div>{{ t(`config.comment`) }}</div>
           <el-button class="main-button icon-button" type="primary" @click="sendButton">
             {{ $t(`config.send`) }}
           </el-button>

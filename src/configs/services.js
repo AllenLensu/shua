@@ -173,53 +173,48 @@ export async function findStarPost() {
     })
 }
 
-export async function getWebSocket() {
-    let webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
-    /**
-     * 当服务端打开连接
-     */
-    webSocket.onopen = function (event) {
-        console.log('WebSocket打开连接');
-    };
+export async function saveTagStatus(tagStates) {
+    let requestBody = new FormData();
+    requestBody.append('tagStates',tagStates)
+    return await request.post(`/api/opt/starTags`, {
+        requestType: 'form',
+        data: requestBody
+    })
+}
 
-    /**
-     * 当服务端发来消息：1.广播消息 2.更新在线人数
-     */
-    webSocket.onmessage = function (event) {
-        console.log('WebSocket收到消息：%c' + event.data, 'color:green');
-        //获取服务端消息
-        let message = JSON.parse(event.data) || {};
-        let $messageContainer = $('.message-container');
-        //喉咙发炎
-        if (message.type === 'SPEAK') {
-            $messageContainer.append(
-                '<div class="mdui-card" style="margin: 10px 0;">' +
-                '<div class="mdui-card-primary">' +
-                '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
-                '</div></div>');
-        }
-        $('.chat-num').text(message.onlineCount);
-        //防止刷屏
-        let $cards = $messageContainer.children('.mdui-card:visible').toArray();
-        if ($cards.length > 5) {
-            $cards.forEach(function (item, index) {
-                index < $cards.length - 5 && $(item).slideUp('fast');
-            });
-        }
-    };
+export async function tagStatus() {
+    return await request(`/api/opt/staredTags`, {
+        methods: 'GET'
+    })
+}
 
-    /**
-     * 关闭连接
-     */
-    webSocket.onclose = function (event) {
-        console.log('WebSocket关闭连接');
-    };
+export async function addComment(requestBody) {
+    return await request.post(`/api/content/addComment`, {
+        requestType: 'form',
+        data: requestBody
+    })
+}
 
-    /**
-     * 通信失败
-     */
-    webSocket.onerror = function (event) {
-        console.log('WebSocket发生异常');
-    };
-    return webSocket;
+export async function getCommentNum(id) {
+    return await request(`/api/content/getCommentNum/` + id, {
+        methods: 'GET'
+    })
+}
+
+export async function getComment(id) {
+    return await request(`/api/content/getComment/` + id, {
+        methods: 'GET'
+    })
+}
+
+export async function findPost(postId) {
+    return await request(`/api/content/detail/` + postId, {
+        methods: 'GET'
+    })
+}
+
+export async function findAvatar(uid) {
+    return await request(`/api/content/` + uid + `/avatar`, {
+        methods: 'GET'
+    })
 }

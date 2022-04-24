@@ -85,6 +85,7 @@ const router = createRouter({
             children: [
                 {
                     path: ':username/:id',
+                    props: true,
                     component: () => import('../pages/chat/ChatRoom.vue')
                 },
                 {
@@ -92,6 +93,11 @@ const router = createRouter({
                     component: () => import('../pages/chat/ChatRoom.vue')
                 }
             ]
+        },
+        {
+            path: '/detail/:postId',
+            props: true,
+            component: () => import('../pages/home/Details.vue')
         }
     ]
 })

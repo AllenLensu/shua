@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import {reactive} from "vue";
 import {findUserInfo} from "../../../configs/services.js";
+import aMessageBox from "../../../components/box/tipBox";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n();
 const userInfoForm = reactive({
   username: '',
   gender: '',
@@ -25,18 +28,21 @@ const userInfoForm = reactive({
   userInfoForm.household = response.data.household;
   userInfoForm.signature = response.data.signature;
   userInfoForm.introduction = response.data.introduction;
-})()
+})();
+
+const infoChangeHandle = () => {
+  aMessageBox(t(`tip.tip`), t(`tip.wait4support`), 'OK')
+}
 </script>
 
 <template>
   <el-form ref="formRef" :model="userInfoForm" label-position="left" label-width="8vw">
     <el-form-item :label='$t(`accountAttr.username`)'>
-      <el-input v-model="userInfoForm.username" disabled style="width: 25vw"></el-input>
+      <el-input v-model="userInfoForm.username" style="width: 25vw"></el-input>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.gender`)'>
       <el-select
           v-model="userInfoForm.gender"
-          disabled
           placeholder="please select your gender"
           style="width: 25vw"
       >
@@ -47,7 +53,6 @@ const userInfoForm = reactive({
     <el-form-item :label='$t(`accountAttr.birthday`)'>
       <el-date-picker
           v-model="userInfoForm.birthday"
-          disabled
           placeholder="Pick a date"
           style="width: 25vw"
           type="date"
@@ -64,19 +69,20 @@ const userInfoForm = reactive({
       />
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.resident`)'>
-      <el-input v-model="userInfoForm.resident" disabled style="width: 25vw"></el-input>
+      <el-input v-model="userInfoForm.resident" style="width: 25vw"></el-input>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.household`)'>
-      <el-input v-model="userInfoForm.household" disabled style="width: 25vw"></el-input>
+      <el-input v-model="userInfoForm.household" style="width: 25vw"></el-input>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.signature`)'>
-      <el-input v-model="userInfoForm.signature" disabled style="width: 25vw" type="text"></el-input>
+      <el-input v-model="userInfoForm.signature" style="width: 25vw" type="text"></el-input>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.introduction`)'>
-      <el-input v-model="userInfoForm.introduction" disabled resize="none" rows="5" style="width: 25vw"
+      <el-input v-model="userInfoForm.introduction" resize="none" rows="5" style="width: 25vw"
                 type="textarea"></el-input>
     </el-form-item>
   </el-form>
+  <el-button @click="infoChangeHandle">{{ $t(`config.change`) }}</el-button>
 </template>
 
 <style scoped>

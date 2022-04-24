@@ -24,10 +24,12 @@
   "config": {
     "back": "Back",
     "cancel": "Cancel",
+    "change": "Change",
     "comment": "Comment",
     "confirm": "Confirm",
     "detail": "Details",
     "edit": "Edit",
+    "finish": "Finish",
     "follow": "Follow",
     "followed": "Followed",
     "login": "Sign In",
@@ -49,11 +51,15 @@
   "hint": {
     "account": "Account",
     "chatList": "Chat List",
+    "detail": "Detail",
+    "detailSetting": "Details Setting",
     "finishAccount": "Finish",
+    "floorinfloor": "Comment in Comment",
     "improveAccount": "Complete Information",
     "information": "Information",
     "initAccount": "Initialize Account",
     "starSetting": "Star Setting",
+    "toSetting": "Temp Setting",
     "uploadAvatar": "Upload Avatar",
     "uploadPost": "Send Post"
   },
@@ -61,7 +67,7 @@
     "America": "American English(en-US)",
     "China": "简体中文(zh-CN)",
     "language": "Language",
-    "title": "Language Switcher"
+    "title": "Switch Lang"
   },
   "navigation": {
     "accountInfo": "Account Info",
@@ -97,6 +103,7 @@
     "success": "Success",
     "tip": "Tips",
     "unImplement": "SORRY! TODO IMPLEMENT!",
+    "unstared": "Yet not have stared",
     "wait4support": "More are waiting for supporting",
     "welcome": "Welcome"
   }

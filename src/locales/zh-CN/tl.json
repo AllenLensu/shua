@@ -24,10 +24,12 @@
   "config": {
     "back": "返回",
     "cancel": "取消",
+    "change": "修改",
     "comment": "评论",
     "confirm": "确认",
     "detail": "详细",
     "edit": "编辑",
+    "finish": "完成",
     "follow": "关注",
     "followed": "已关注",
     "login": "登录",
@@ -49,11 +51,15 @@
   "hint": {
     "account": "账户",
     "chatList": "聊天列表",
+    "detail": "详情",
+    "detailSetting": "详细设置",
     "finishAccount": "完成注册",
+    "floorinfloor": "回复",
     "improveAccount": "完善信息",
     "information": "资料",
     "initAccount": "账户录入",
     "starSetting": "星选设置",
+    "toSetting": "临时设置",
     "uploadAvatar": "上传头像",
     "uploadPost": "发布帖子"
   },
@@ -97,6 +103,7 @@
     "success": "成功",
     "tip": "温馨提示",
     "unImplement": "对不起！尚未实现！",
+    "unstared": "还未关注分类",
     "wait4support": "尚待修缮",
     "welcome": "欢迎"
   }

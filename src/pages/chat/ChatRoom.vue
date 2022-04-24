@@ -3,6 +3,7 @@ import {useRoute, useRouter} from "vue-router";
 import {defineProps, ref, watch} from "vue";
 import {ArrowLeft} from "@element-plus/icons-vue";
 import {useI18n} from "vue-i18n";
+import ChatActive from "./ChatActive.vue";
 
 const route = useRoute()
 const router = useRouter()
@@ -49,6 +50,7 @@ watch(
   </div>
   <div v-else>
     ChatRoom {{ roomRef }}
+    <ChatActive />
   </div>
 </template>
 

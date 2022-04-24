@@ -5,9 +5,10 @@ import Vditor from "vditor";
 import aMessageBox from "../box/tipBox.ts";
 import moment from "moment";
 import {useStore} from "vuex";
+import {UserFilled} from "@element-plus/icons-vue";
 import {
   favor,
-  follow,
+  follow, getCommentNum,
   getFavorInfo,
   getFollowInfo,
   getThumbsInfo,
@@ -16,6 +17,7 @@ import {
   unfavor,
   unfollow
 } from "../../configs/services.js"
+import {useRouter} from "vue-router";
 
 const props = defineProps<{
   post: any
@@ -25,6 +27,8 @@ const store = useStore()
 const isFollow = ref(false);
 const isFavor = ref(false);
 const isThumbs = ref(false);
+const commentNum = ref(0);
+const router = useRouter()
 
 const currentUser = computed(() => store.state.currentUser.value);
 (async () => {
@@ -46,6 +50,11 @@ const currentUser = computed(() => store.state.currentUser.value);
     const {data} = await getThumbsInfo(props.post.contentid)
     isThumbs.value = data
   }
+})();
+
+(async () => {
+    const {data} = await getCommentNum(props.post.contentid)
+    commentNum.value = data ?? 0
 })();
 
 onMounted(() => {
@@ -102,8 +111,8 @@ const thumbsdownHandler = async () => {
   }
 }
 
-const errorHandler = () => {
-  aMessageBox(t(`tip.tip`), t(`tip.wait4support`), 'OK')
+const commentHandler = async () => {
+  router.push('/detail/' + props.post.contentid)
 }
 
 </script>
@@ -113,13 +122,12 @@ const errorHandler = () => {
     <template #header>
       <div class="card-header">
         <div class="card-header-plus">
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">
-            <img alt="avatar" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-          </el-avatar>
+          <el-avatar :fit="`fill`" :icon="UserFilled" :alt="props.post.uid" :size="32" :src="'/avatar/' + props.post.avatar"
+                     shape="circle"></el-avatar>
           <div style="margin-left: 12px;">
             {{ props.post.uid }}
             <div class="text timePosition">
-              {{ props.post.signature }}
+              {{ props.post.signature ?? "这个用户很懒，什么都没留下" }}
               <el-divider direction="vertical"/>
               {{ moment(props.post.sendTime).toNow() }}
             </div>
@@ -154,10 +162,10 @@ const errorHandler = () => {
           {{ $t(`config.star`) }}
         </el-space>
       </el-button>
-      <el-button class="button" @click="errorHandler">
+      <el-button class="button" @click="commentHandler">
         <el-space>
           <font-awesome-icon :icon="['fas', 'comment-alt']" :mask="['far', 'circle']"/>
-          {{ $t(`config.comment`) }}
+          {{ $t(`config.comment`) }} {{ commentNum }}
         </el-space>
       </el-button>
       <el-button v-if="isThumbs" class="button" color="#F56C6C" @click="thumbsdownHandler">
