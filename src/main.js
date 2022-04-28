@@ -21,7 +21,8 @@ import {
     faThumbsUp,
     faStarHalfAlt,
     faComments,
-    faCheck
+    faCheck,
+    faShareAlt
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 
@@ -32,7 +33,7 @@ Object.values(icons).forEach(component => {
     app.component(component.name, component)
 })
 
-library.add(faAudioDescription, faCircle, faBugs, faStar, faPlus, faThumbsUp, faCommentAlt, faStarHalfAlt, faComments, faCheck)
+library.add(faAudioDescription, faCircle, faBugs, faStar, faPlus, faThumbsUp, faCommentAlt, faStarHalfAlt, faComments, faCheck, faShareAlt)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(I18n)
 app.use(Store)

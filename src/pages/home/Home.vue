@@ -129,11 +129,11 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.el-header :deep {
+:deep(.el-header) {
   --el-header-padding: 0px
 }
 
-.el-menu :deep {
+:deep(.el-menu) {
   border-right: 0
 }
 

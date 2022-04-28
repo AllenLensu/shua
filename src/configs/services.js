@@ -1,6 +1,15 @@
 import request from "./request";
 import {now} from "moment";
 
+export async function getShortUrl(longUrl) {
+    let requestBody = new FormData();
+    requestBody.append("url", longUrl)
+    return await request.post(`/api/s/c`, {
+        requestType: 'form',
+        data: requestBody
+    })
+}
+
 export async function accountVerify(account) {
     let requestBody = new FormData();
     requestBody.append("username", account.username);
@@ -32,10 +41,22 @@ export async function logout() {
 
 export async function findPosts(id) {
     let postUrl = `/api/content/`
-    if (id === undefined || id === 0) {
+    if (id === undefined || id === 0 || id === '0') {
         postUrl += `global`
     } else {
         postUrl += `type?id=` + id
+    }
+    return await request(postUrl, {
+        methods: 'GET'
+    })
+}
+
+export async function findPostsTime(id) {
+    let postUrl = `/api/content/`
+    if (id === undefined || id === 0 || id === '0') {
+        postUrl += `global/time`
+    } else {
+        postUrl += `type/time?id=` + id
     }
     return await request(postUrl, {
         methods: 'GET'
@@ -215,6 +236,73 @@ export async function findPost(postId) {
 
 export async function findAvatar(uid) {
     return await request(`/api/content/` + uid + `/avatar`, {
+        methods: 'GET'
+    })
+}
+
+export async function changeProfile(requestBody) {
+    return await request.post(`/api/account/changeProfile`, {
+        requestType: 'form',
+        data: requestBody
+    })
+}
+
+export async function getBanner() {
+    return await request(`/api/zone/banner`, {
+        methods: 'GET'
+    })
+}
+
+export async function ccGetHistory(uid) {
+    return await request(`/api/zone/` + uid + `/ccHistory`, {
+        methods: 'GET'
+    })
+}
+
+export async function cfGetHistory() {
+    return await request(`/api/zone/cfHistory`, {
+        methods: 'GET'
+    })
+}
+
+export async function ctGetHistory() {
+    return await request(`/api/zone/ctHistory`, {
+        methods: 'GET'
+    })
+}
+
+export async function getPostNum() {
+    return await request(`/api/zone/getPostNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function getTodayPostNum() {
+    return await request(`/api/zone/getTodayPostNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function getFollowNum() {
+    return await request(`/api/zone/getFollowNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function getTodayFollowNum() {
+    return await request(`/api/zone/getTodayFollowNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function getFollowedNum() {
+    return await request(`/api/zone/getFollowedNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function getTodayFollowedNum() {
+    return await request(`/api/zone/getTodayFollowedNum`, {
         methods: 'GET'
     })
 }

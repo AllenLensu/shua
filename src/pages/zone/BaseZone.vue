@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {HomeFilled, Management, Menu as IconMenu, Setting} from '@element-plus/icons-vue'
 import {useRoute, useRouter} from 'vue-router'
 import {computed, onUnmounted, ref} from "vue";
 import {useStore} from "vuex";
@@ -23,16 +22,30 @@ const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px');
 const getActiveIndex = (): string => {
   //TODO IMPLEMENT
   switch (route.fullPath) {
-    case '/zone/':
-      return 'zone'
     case '/zone':
       return 'zone'
+    case '/zone/':
+      return 'zone'
+    case '/zone/comment':
+      return 'history/comment'
+    case '/zone/favor':
+      return 'history/favor'
+    case '/zone/thumb':
+      return 'history/thumb'
+    case '/zone/comment/':
+      return 'history/comment'
+    case '/zone/favor/':
+      return 'history/favor'
+    case '/zone/thumb/':
+      return 'history/thumb'
     case '/zone/user/info':
+      return 'user/info'
+    case '/zone/user/info/':
       return 'user/info'
     case '/zone/manage':
       return 'manage'
-    case '/zone/setting':
-      return 'setting'
+    case '/zone/manage/':
+      return 'manage'
     default:
       return 'setting'
   }
@@ -75,10 +88,23 @@ onUnmounted(() => {
             </el-icon>
             <span>{{ $t(`navigation.home`) }}</span>
           </el-menu-item>
+          <el-sub-menu index="history">
+            <template #title>
+              <el-icon>
+                <Aim/>
+              </el-icon>
+              <span>{{ $t(`navigation.history`) }}</span>
+            </template>
+            <el-menu-item-group :title="t(`hint.treasureChest`)">
+              <el-menu-item index="history/comment" route="/zone/comment">{{ $t(`navigation.comment`) }}</el-menu-item>
+              <el-menu-item index="history/favor" route="/zone/favor">{{ $t(`navigation.favor`) }}</el-menu-item>
+              <el-menu-item index="history/thumb" route="/zone/thumb">{{ $t(`navigation.thumb`) }}</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
           <el-sub-menu index="user">
             <template #title>
               <el-icon>
-                <icon-menu/>
+                <Menu/>
               </el-icon>
               <span>{{ $t(`navigation.centre`) }}</span>
             </template>
@@ -111,15 +137,15 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.el-aside :deep {
+:deep(.el-aside) {
   --el-aside-width: 200px
 }
 
-.el-menu :deep {
+:deep(.el-menu) {
   border-right: 0
 }
 
-.el-main :deep {
+:deep(.el-main) {
   --el-main-padding: 10px;
 }
 </style>

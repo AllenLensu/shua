@@ -65,7 +65,7 @@ const prevButton = () => {
   padding-left: 45px;
 }
 
-.main-button.icon-button:after :deep {
+:deep(.main-button.icon-button:after) {
   content: "\f177";
   font-family: FontAwesome, ui-serif;
   position: absolute;

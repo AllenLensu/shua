@@ -9,6 +9,7 @@ import aMessage from "../box/tipMes.ts";
 
 const props = defineProps<{
   postId: any,
+  commentNum: any,
   ex?: any
 }>()
 const store = useStore();
@@ -53,7 +54,7 @@ onUnmounted(async () => {
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <div>{{ t(`config.comment`) }}</div>
+          <div>{{ t(`config.comment`) }} {{props.commentNum}}</div>
           <el-button class="main-button icon-button" type="primary" @click="sendButton">
             {{ $t(`config.send`) }}
           </el-button>
@@ -101,7 +102,7 @@ onUnmounted(async () => {
   padding-right: 45px;
 }
 
-.main-button.icon-button:after :deep {
+:deep(.main-button.icon-button:after) {
   content: "\f178";
   font-family: FontAwesome, ui-serif;
   position: absolute;

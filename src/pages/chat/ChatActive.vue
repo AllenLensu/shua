@@ -1,26 +1,16 @@
-<template>
-  <el-input v-model="input">
-  </el-input>
-  <el-button type="submit" @click="sendMessage">发送</el-button>
-  <div>在线人数: {{onlineCount}}</div>
-  <div v-for="msg in messages">
-    {{msg}}
-  </div>
-</template>
+<script lang="ts" setup>
+import {computed, onUnmounted, ref} from "vue";
+import {useStore} from "vuex";
 
-<script setup lang="ts">
-import {onUnmounted, ref} from "vue";
-
-const websocket  = new WebSocket("ws://localhost:18080/chat")
+const websocket = new WebSocket("ws://localhost:18080/chat")
 onUnmounted(() => {
   websocket.close()
 })
 
-
-
 const input = ref("")
-
-const username = "2233"
+const store = useStore()
+const usrInfo = computed(() => store.state.currentUser.value)
+const username = usrInfo.value.username
 
 function sendMessage() {
   websocket.send(JSON.stringify({username, msg: input.value}));
@@ -44,8 +34,17 @@ websocket.onmessage = (event) => {
     messages.value = messages.value.concat(message.username + "：" + message.msg)
   }
 }
-
 </script>
+
+<template>
+  <el-input v-model="input">
+  </el-input>
+  <el-button type="submit" @click="sendMessage">发送</el-button>
+  <div>在线人数: {{ onlineCount }}</div>
+  <div v-for="msg in messages">
+    {{ msg }}
+  </div>
+</template>
 
 <style scoped>
 

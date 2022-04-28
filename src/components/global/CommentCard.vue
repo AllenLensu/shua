@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import {defineProps, ref} from "vue";
+import {computed, defineProps, ref} from "vue";
 import {useI18n} from 'vue-i18n'
 import moment from "moment";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
 import SubCommentCard from "./SubCommentCard.vue";
 import {UserFilled} from "@element-plus/icons-vue";
-import {addComment, findAvatar} from "../../configs/services.js";
+import {addComment, findAvatar, getShortUrl} from "../../configs/services.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+import aMessageBox from "../box/tipBox.ts";
 
 const props = defineProps<{
   comment: any
@@ -18,35 +19,41 @@ const router = useRouter()
 const avatarRef = ref()
 
 const commentHandler = () => {
-  ElMessageBox.prompt(t(`placeholder.postContent`), t(`hint.floorinfloor`), {
-    confirmButtonText: t(`config.confirm`),
-    cancelButtonText: t(`config.cancel`),
-  })
-      .then(({value}) => {
-        let requestBody = new FormData();
-        requestBody.append("post_id", props.comment.contentId)
-        requestBody.append("comment", value)
-        requestBody.append("comment_id_ex", props.comment.id)
-        try {
-          addComment(requestBody)
-        } catch (e) {
-          ElMessage({
-            type: 'error',
-            message: `Your comment is:${value}`,
-          })
-        }
-      })
-      .catch(() => {
+  const verifyInfo = computed(() => store.state.currentUser.value)
+  if (!verifyInfo.value) {
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    router.push('/account')
+  } else {
+    ElMessageBox.prompt(t(`placeholder.postContent`), t(`hint.floorinfloor`), {
+      confirmButtonText: t(`config.confirm`),
+      cancelButtonText: t(`config.cancel`),
+    }).then(async ({value}) => {
+      let requestBody = new FormData();
+      requestBody.append("post_id", props.comment.contentId)
+      requestBody.append("comment", value)
+      requestBody.append("comment_id_ex", props.comment.id)
+      try {
+        await addComment(requestBody)
+        window.location.reload()
+      } catch (e) {
         ElMessage({
-          type: 'info',
-          message: 'Input canceled',
+          type: 'error',
+          message: `Your comment is:${value}`,
         })
-      })
+      }
+    })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Input canceled',
+          })
+        })
+  }
 };
 
 (async () => {
   const {data} = await findAvatar(props.comment.uid)
-  avatarRef.value = "/avatar/" + data
+  avatarRef.value = "/assets/avatar/" + data
 })()
 
 </script>
@@ -79,9 +86,9 @@ const commentHandler = () => {
       <p style="margin-top: -10px"/>
       <div v-if="props.comment.subComments">
         <el-space direction="vertical" fill style="width: 100%;">
-        <div v-for="subcomment in props.comment.subComments" :key="subcomment.floor">
-          <SubCommentCard :comment="subcomment"/>
-        </div>
+          <div v-for="subcomment in props.comment.subComments" :key="subcomment.floor">
+            <SubCommentCard :comment="subcomment"/>
+          </div>
         </el-space>
       </div>
     </el-space>

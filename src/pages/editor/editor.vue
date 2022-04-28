@@ -185,7 +185,7 @@ onMounted(async () => {
   padding-right: 45px;
 }
 
-.main-button.icon-button:after :deep {
+:deep(.main-button.icon-button:after) {
   content: "\f178";
   font-family: FontAwesome, ui-serif;
   position: absolute;

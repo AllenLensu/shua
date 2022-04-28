@@ -8,9 +8,11 @@ import {useStore} from "vuex";
 import {UserFilled} from "@element-plus/icons-vue";
 import {
   favor,
-  follow, getCommentNum,
+  follow,
+  getCommentNum,
   getFavorInfo,
-  getFollowInfo, getShortUrl,
+  getFollowInfo,
+  getShortUrl,
   getThumbsInfo,
   thumbsdown,
   thumbsup,
@@ -72,7 +74,7 @@ const currentUser = computed(() => store.state.currentUser.value);
 })();
 
 onMounted(() => {
-  let element = document.getElementById(String(props.post.contentid))
+  let element = document.getElementById(`` + props.post.uid + props.post.commentTime + props.post.contentid)
   Vditor.preview(element as HTMLDivElement, props.post.content)
 })
 
@@ -177,7 +179,7 @@ onUnmounted(() => {
         </div>
       </div>
     </template>
-    <div :id="post.contentid" class="text item"></div>
+    <div :id="``+ post.uid + post.commentTime +post.contentid" class="text item"></div>
     <el-divider/>
     <div class="optionPosition">
       <el-button v-if="isFavor" class="button" color="#E6A23C" @click="unfavorHandler">

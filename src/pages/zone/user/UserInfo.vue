@@ -1,12 +1,15 @@
 <script lang="ts" setup>
-import {reactive} from "vue";
-import {findUserInfo} from "../../../configs/services.js";
+import {reactive, ref} from "vue";
+import {changeProfile, findUserInfo} from "../../../configs/services.js";
 import aMessageBox from "../../../components/box/tipBox";
 import {useI18n} from "vue-i18n";
+import pca from "../../../assets/json/pca-code.json"
 
 const {t} = useI18n();
 const userInfoForm = reactive({
   username: '',
+  name: '',
+  uuid: '',
   gender: '',
   birthday: '',
   age: 0,
@@ -18,27 +21,53 @@ const userInfoForm = reactive({
 
 (async () => {
   const response = await findUserInfo()
-  console.log(response.data)
-  // userInfo.value = response.data
+  userInfoForm.name = response.data.name
+  userInfoForm.uuid = response.data.id
   userInfoForm.username = response.data.username;
   userInfoForm.gender = response.data.gender ? 'MALE' : 'FEMALE';
   userInfoForm.birthday = new Date(response.data.birthday).toLocaleDateString();
   userInfoForm.age = response.data.age;
-  userInfoForm.resident = response.data.resident;
-  userInfoForm.household = response.data.household;
+  userInfoForm.resident = response.data.resident.split(',');
+  userInfoForm.household = response.data.household.split(',');
   userInfoForm.signature = response.data.signature;
   userInfoForm.introduction = response.data.introduction;
+  console.log(userInfoForm)
 })();
 
-const infoChangeHandle = () => {
-  aMessageBox(t(`tip.tip`), t(`tip.wait4support`), 'OK')
+const infoChangeHandle = async () => {
+  console.log(userInfoForm)
+  let requestData = new FormData();
+  let gender
+  if (userInfoForm.gender == "MALE") {
+    gender = 1
+  } else if (userInfoForm.gender == "FEMALE") {
+    gender = 0
+  }
+  requestData.append("age", userInfoForm.age.toString())
+  requestData.append("birthday", userInfoForm.birthday.toString())
+  requestData.append("gender", gender.toString())
+  requestData.append("household", userInfoForm.household)
+  requestData.append("introduction", userInfoForm.introduction)
+  requestData.append("name", userInfoForm.name)
+  requestData.append("resident", userInfoForm.resident)
+  requestData.append("signature", userInfoForm.signature)
+  requestData.append("uuid", userInfoForm.uuid)
+  const {success} = await changeProfile(requestData)
+  if (success) {
+    await aMessageBox(t(`tip.tip`), t(`tip.success`), 'OK')
+  } else {
+    await aMessageBox(t(`tip.tip`), t(`tip.error`), 'OK')
+  }
 }
 </script>
 
 <template>
   <el-form ref="formRef" :model="userInfoForm" label-position="left" label-width="8vw">
     <el-form-item :label='$t(`accountAttr.username`)'>
-      <el-input v-model="userInfoForm.username" style="width: 25vw"></el-input>
+      <el-input v-model="userInfoForm.username" disabled style="width: 25vw"></el-input>
+    </el-form-item>
+    <el-form-item :label='$t(`accountAttr.name`)'>
+      <el-input v-model="userInfoForm.name" style="width: 25vw"></el-input>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.gender`)'>
       <el-select
@@ -69,10 +98,28 @@ const infoChangeHandle = () => {
       />
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.resident`)'>
-      <el-input v-model="userInfoForm.resident" style="width: 25vw"></el-input>
+      <el-cascader
+          v-model="userInfoForm.resident"
+          :multiple="false"
+          :options="pca"
+          :placeholder="t(`placeholder.place`)"
+          expandTrigger="hover"
+          filterable
+          separator=" > "
+          style="width: 25vw"
+      />
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.household`)'>
-      <el-input v-model="userInfoForm.household" style="width: 25vw"></el-input>
+      <el-cascader
+          v-model="userInfoForm.household"
+          :multiple="false"
+          :options="pca"
+          :placeholder="t(`placeholder.place`)"
+          expandTrigger="hover"
+          filterable
+          separator=" > "
+          style="width: 25vw"
+      />
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.signature`)'>
       <el-input v-model="userInfoForm.signature" style="width: 25vw" type="text"></el-input>
@@ -82,11 +129,30 @@ const infoChangeHandle = () => {
                 type="textarea"></el-input>
     </el-form-item>
   </el-form>
-  <el-button @click="infoChangeHandle">{{ $t(`config.change`) }}</el-button>
+  <el-button type="primary" class="main-button" @click="infoChangeHandle">{{ $t(`config.change`) }}</el-button>
 </template>
 
 <style scoped>
-.el-input-number :deep .el-input__inner :deep {
+:deep(.el-input-number.el-input__inner) {
   text-align: left;
+}
+
+.main-button {
+  position: relative;
+  font-family: YKH55, sans-serif;
+  display: inline-block;
+  background-color: #409EFF;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  color: #FFF;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.main-button:hover,
+.main-button:focus {
+  background-color: #fff;
+  border: 2px solid #409EFF;
+  color: #409EFF;
 }
 </style>

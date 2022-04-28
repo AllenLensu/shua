@@ -1,33 +1,83 @@
 <script lang="ts" setup>
+import {
+  getBanner,
+  getFollowedNum,
+  getFollowNum,
+  getPostNum,
+  getTodayFollowedNum,
+  getTodayFollowNum,
+  getTodayPostNum
+} from "../../../configs/services.js"
+import {computed, onBeforeMount, ref} from "vue";
+import {useStore} from "vuex";
+import AccountPanelZone from "../../../components/global/AccountPanelZone.vue";
 
+const store = useStore();
+const bannerList = ref();
+const info = computed(() => store.state.currentUser.value);
+const postNum = ref(0);
+const tdPostNum = ref(0);
+const followNum = ref(0);
+const tdFollowNum = ref(0);
+const followedNum = ref(0);
+const tdFollowedNum = ref(0);
+
+(async () => {
+  const {data} = await getPostNum()
+  postNum.value = data
+})();
+
+(async () => {
+  const {data} = await getTodayPostNum()
+  tdPostNum.value = data
+})();
+
+(async () => {
+  const {data} = await getFollowNum()
+  followNum.value = data
+})();
+
+(async () => {
+  const {data} = await getTodayFollowNum()
+  tdFollowNum.value = data
+})();
+
+(async () => {
+  const {data} = await getFollowedNum()
+  followedNum.value = data
+})();
+
+(async () => {
+  const {data} = await getTodayFollowedNum()
+  tdFollowedNum.value = data
+})();
+
+onBeforeMount(async () => {
+  bannerList.value = (await getBanner()).data
+  console.log(bannerList.value)
+})
 </script>
 
 <template>
   <div class="block">
     <span class="demonstration"> </span>
-    <el-carousel height="150px">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <h3 class="small">{{ item }}</h3>
+    <el-carousel :interval="4000" autoplay height="30vh" type="card">
+      <el-carousel-item v-for="item in bannerList" :key="item.id">
+        <el-image :src="`/assets/banner/` + item.path" fit="cover"/>
       </el-carousel-item>
     </el-carousel>
   </div>
+  <h6/>
+  <AccountPanelZone
+      :followNum="followNum"
+      :followedNum="followedNum"
+      :postNum="postNum"
+      :tdFollowNum="tdFollowNum"
+      :tdFollowedNum="tdFollowedNum"
+      :tdPostNum="tdPostNum"
+  />
 </template>
 
 <style scoped>
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 150px;
-  margin: 0;
-  text-align: center;
-}
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
 </style>

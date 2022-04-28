@@ -27,11 +27,11 @@ export default defineConfig({
                 // ws: false,
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
-            '^/avatar': {
+            '^/assets': {
                 target: "http://localhost:11010/",
                 // changeOrigin: false,
                 // ws: false,
-                rewrite: (path) => path.replace(/^\/avatar/, '')
+                rewrite: (path) => path.replace(/^\/assets/, '')
             }
         }
     },

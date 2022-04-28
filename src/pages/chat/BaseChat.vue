@@ -50,13 +50,13 @@ asideScrollHeightRef.value = window.innerHeight - 100;
   margin-right: 5%;
 }
 
-.el-header :deep {
+:deep(.el-header) {
   padding-bottom: 20px;
   padding-top: 10px;
   --el-header-height: unset;
 }
 
-.el-main :deep {
+:deep(.el-main) {
   display: flex;
   flex-direction: column;
 }

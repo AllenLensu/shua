@@ -3,16 +3,16 @@ import {
   favor,
   findPost,
   follow,
-  getComment,
+  getComment, getCommentNum,
   getFavorInfo,
-  getFollowInfo,
+  getFollowInfo, getShortUrl,
   getThumbsInfo,
   thumbsdown,
   thumbsup,
   unfavor,
   unfollow
 } from "../../configs/services.js"
-import {computed, defineProps, onMounted, ref} from "vue";
+import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
 import {useI18n} from 'vue-i18n'
 import Vditor from "vditor";
 import aMessageBox from "../../components/box/tipBox.ts";
@@ -22,6 +22,7 @@ import {ArrowLeft, UserFilled} from "@element-plus/icons-vue";
 import {useRouter} from "vue-router";
 import CreateComment from "../../components/global/CreateComment.vue";
 import CommentCard from "../../components/global/CommentCard.vue";
+import Clipboard from "clipboard";
 
 const scrollBarHeight = ref(window.innerHeight - 80)
 
@@ -32,19 +33,27 @@ const isFavor = ref(false);
 const isThumbs = ref(false);
 const router = useRouter()
 const postRef = ref({});
+const commentNum = ref(0);
 const avatar = ref("");
 const props = defineProps<{
   postId: any
 }>();
+const shareUrl = ref(`http://localhost:18000/#/detail/`+props.postId);
+const shortShareUrl = ref('');
+
+(async () => {
+  shortShareUrl.value = await getShortUrl(`http://localhost:18000/#/detail/` + props.postId)
+})();
 const handleBack = () => {
   router.go(-1)
 }
 const commentRef = ref({});
+let clipboard;
 
 onMounted(async () => {
   const {data} = await findPost(props.postId)
   postRef.value = data
-  avatar.value = "/avatar/" + postRef.value.avatar
+  avatar.value = "/assets/avatar/" + postRef.value.avatar
   const element = document.getElementById(String(props.postId))
   await Vditor.preview(element as HTMLDivElement, postRef.value.content)
 });
@@ -75,6 +84,11 @@ const currentUser = computed(() => store.state.currentUser.value);
     const {data} = await getThumbsInfo(props.postId)
     isThumbs.value = data
   }
+})();
+
+(async () => {
+  const {data} = await getCommentNum(props.postId)
+  commentNum.value = data ?? 0
 })();
 
 const starHandler = async () => {
@@ -124,6 +138,20 @@ const thumbsdownHandler = async () => {
     isThumbs.value = false
   }
 }
+
+onMounted(() => {
+  clipboard = new Clipboard(`#shareButton${props.postId}`)
+  clipboard.on("success", async (event) => {
+    await aMessageBox(t(`tip.tip`), t(`tip.hasCopy`) + ` : ` + event.text, 'OK')
+  })
+  clipboard.on("error", async (event) => {
+    await aMessageBox(t(`tip.tip`), t(`tip.error`) + ` : ` + event, 'OK')
+  })
+
+})
+onUnmounted(() => {
+  clipboard.destroy()
+})
 </script>
 
 <template>
@@ -187,10 +215,16 @@ const thumbsdownHandler = async () => {
             {{ $t(`config.thumbsdown`) }}
           </el-space>
         </el-button>
+        <el-button class="button" :id="`shareButton${props.postId}`" :data-clipboard-text="shortShareUrl || shareUrl">
+          <el-space>
+            <font-awesome-icon :icon="['fas', 'share-alt']"/>
+            {{ $t(`config.share`) }}
+          </el-space>
+        </el-button>
       </div>
     </el-card>
     <h6/>
-    <CreateComment :postId="props.postId"/>
+    <CreateComment :postId="props.postId" :commentNum="commentNum"/>
     <el-space direction="vertical" fill size="large" style="width: 100%;">
       <div v-for="comment in commentRef" :key="comment.floor">
         <CommentCard :comment="comment"/>

@@ -53,7 +53,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.el-space__item :deep {
+:deep(.el-space__item) {
   justify-content: center;
 }
 </style>

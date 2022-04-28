@@ -33,7 +33,7 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-.el-card :deep {
+:deep(.el-card) {
   border: 0;
 }
 </style>

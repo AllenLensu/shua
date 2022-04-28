@@ -11,6 +11,9 @@ const store = useStore()
 const router = useRouter()
 const accountLevel = ref(0)
 
+const currentUser = computed(() => store.state.currentUser.value)
+const accountInfo = computed(() => store.state.currentUser.profile)
+
 const toggle = () => {
   if (locale.value == 'zh_CN') {
     locale.value = 'en_US'
@@ -25,10 +28,6 @@ const loginOut = async () => {
   await store.dispatch('clearCurrentUser')
   router.push('/account')
 }
-
-const currentUser = computed(() => store.state.currentUser.value)
-const accountInfo = computed(() => store.state.currentUser.profile)
-
 </script>
 
 <template>
@@ -88,7 +87,7 @@ const accountInfo = computed(() => store.state.currentUser.profile)
           </template>
           <template #reference>
             <div class="account">
-              <el-avatar :fit="`fill`" :icon="UserFilled" :size="32" :src="currentUser?.avatar"
+              <el-avatar :fit="`fill`" :icon="UserFilled" :size="32" :src="'/assets/avatar/'+currentUser?.avatar"
                          shape="circle"></el-avatar>
             </div>
           </template>

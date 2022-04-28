@@ -41,7 +41,7 @@ const router = useRouter()
   margin-bottom: 5%;
 }
 
-a:-webkit-any-link :deep {
+:deep(a:-webkit-any-link) {
   color: unset;
   cursor: pointer;
   text-decoration: unset;

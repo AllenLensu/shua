@@ -31,7 +31,7 @@ watch(() => props.selectAll, (selectAll) => {
 </template>
 
 <style scoped>
-.el-check-tag :deep {
+:deep(.el-check-tag) {
   font-weight: normal;
 }
 </style>

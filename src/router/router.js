@@ -72,6 +72,15 @@ const router = createRouter({
                 }, {
                     path: 'star',
                     component: () => import('../pages/zone/setting/star/StarSetting.vue')
+                }, {
+                    path: 'comment',
+                    component: () => import('../pages/zone/history/CommentHistory.vue')
+                }, {
+                    path: 'favor',
+                    component: () => import('../pages/zone/history/FavorHistory.vue')
+                }, {
+                    path: 'thumb',
+                    component: () => import('../pages/zone/history/ThumbHistory.vue')
                 }
             ]
         },

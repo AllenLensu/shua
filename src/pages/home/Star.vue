@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import Card from "../../components/global/Card.vue";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {findStarPost} from "../../configs/services.js";
 import {useRouter} from "vue-router";
 import StarSetting from "./InnerStarSetting.vue";
+import {useStore} from "vuex";
 
 const router = useRouter()
 const props = defineProps<{
@@ -18,12 +19,19 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const totalPost = ref(0)
 const drawer = ref(false)
+const store = useStore()
 
 const handleCurrentChange = (val: number) => {
   postCalc.value = postList.value.slice((val - 1) * pageSize.value + 1, (val) * pageSize.value + 1)
 }
 const settingButton = () => {
-  drawer.value = true
+  const isLogin = computed(() => store.state.currentUser.value)
+  console.log(isLogin.value)
+  if (isLogin.value) {
+    drawer.value = true
+  } else {
+    router.push('/account')
+  }
 }
 
 // 当参数更改时获取用户信息
@@ -98,7 +106,7 @@ const settingButton = () => {
   padding-right: 45px;
 }
 
-.main-button.icon-button:after :deep {
+:deep(.main-button.icon-button:after) {
   content: "\f178";
   font-family: FontAwesome, ui-serif;
   position: absolute;

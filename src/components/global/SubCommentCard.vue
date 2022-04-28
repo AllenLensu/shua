@@ -17,7 +17,7 @@ const router = useRouter();
 
 (async () => {
   const {data} = await findAvatar(props.comment.uid)
-  avatarRef.value = "/avatar/" + data
+  avatarRef.value = "/assets/avatar/" + data
 })()
 
 </script>
