@@ -26,7 +26,6 @@ const handleCurrentChange = (val: number) => {
 }
 const settingButton = () => {
   const isLogin = computed(() => store.state.currentUser.value)
-  console.log(isLogin.value)
   if (isLogin.value) {
     drawer.value = true
   } else {

@@ -38,10 +38,10 @@ const handleAvatarChange = (uploadFile: UploadFile) => {
 };
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (rawFile.type !== "image/jpeg, image/png") {
-    ElMessage.error(t(`tip.avatarFormat`))
-    return false
-  } else if (rawFile.size / 1024 / 1024 > 2) {
+  if (rawFile.type !== "image/jpeg" || rawFile.type !== "image/png") {
+    ElMessage.error(t(`tip.formatError`))
+  }
+  if (rawFile.size > 1048576) {
     ElMessage.error(t(`tip.avatarSize`))
     return false
   }
@@ -57,11 +57,14 @@ const handleExceed: UploadProps["onExceed"] = (files) => {
 };
 
 const submitUpload = async () => {
+  if (uploadRawFile.value === undefined) {
+    return aMessageBox(t(`tip.tip`), t(`tip.requireAvatar`), t(`config.confirm`))
+  }
   let requestBody = new FormData();
   requestBody.append("file", uploadRawFile.value);
   requestBody.append("uid", localStorage.getItem("register-username"));
   requestBody.append("password", localStorage.getItem("register-password"));
-  requestBody.append("gender", localStorage.getItem("register-gender"));
+  requestBody.append("gender", localStorage.getItem("register-gender") ?? "1");
   requestBody.append("lastname", localStorage.getItem("register-lastname"));
   requestBody.append("firstname", localStorage.getItem("register-firstname"));
   requestBody.append("birthday", localStorage.getItem("register-birthday"));
@@ -111,10 +114,10 @@ const submitUpload = async () => {
         </el-icon>
       </el-upload>
       <div class="box button arrange">
-        <el-button type="primary" @click="router2Login">{{
-            $t(`config.login`)
-          }}
-        </el-button>
+<!--        <el-button type="primary" @click="router2Login">{{-->
+<!--            $t(`config.login`)-->
+<!--          }}-->
+<!--        </el-button>-->
         <el-button type="primary" @click="prevPage">{{
             $t(`config.prev`)
           }}

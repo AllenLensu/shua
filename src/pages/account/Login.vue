@@ -1,14 +1,17 @@
 <script lang="ts" setup>
 import {computed, reactive, ref} from 'vue'
 import type {ElForm} from 'element-plus'
-import {accountVerify} from '../../configs/services.js'
-import {onBeforeRouteLeave, onBeforeRouteUpdate, useRouter} from 'vue-router'
+import {accountVerify, uidUni} from '../../configs/services.js'
+import {onBeforeRouteLeave, useRouter} from 'vue-router'
+import aMessageBox from '../../components/box/tipBox.ts'
 import {useStore} from "vuex";
+import {useI18n} from "vue-i18n";
 import './multiplexed.css'
 
 const ruleFormRef = ref<InstanceType<typeof ElForm>>()
 const router = useRouter();
 const store = useStore();
+const {t} = useI18n();
 
 (async () => {
   const isLogin = computed(() => store.state.currentUser.value)
@@ -51,11 +54,15 @@ const submitForm = async (formEl: InstanceType<typeof ElForm> | undefined) => {
   const isValid = await formEl.validate()
   if (isValid) {
     try {
-      await accountVerify(ruleForm)
-      await store.dispatch('loadCurrentUser')
-      router.go(-1)
+      const res = await accountVerify(ruleForm)
+      if (res.success) {
+        await store.dispatch('loadCurrentUser')
+        router.go(-1)
+      } else {
+        await aMessageBox(t(`tip.tip`),t(`tip.loginE`),t(`config.confirm`))
+      }
     } catch (e) {
-      alert("用户名或密码错误")
+      await aMessageBox(t(`tip.tip`),t(`tip.passE`),t(`config.confirm`))
       console.error(e)
     }
   }

@@ -27,9 +27,11 @@ const router = useRouter();
     <el-space direction="horizontal">
       <div class="card-header">
         <div class="card-header-plus">
+          <router-link :to="`/user/` + props.comment.uid + `/` + props.comment.contentId">
           <el-avatar :fit="`fill`" :icon="UserFilled" :alt="props.comment.uid" :size="32"
                      :src="avatarRef"
                      shape="circle"></el-avatar>
+          </router-link>
           <div style="margin-left: 12px;">
             {{ props.comment.uid }}
             <div class="text timePosition">

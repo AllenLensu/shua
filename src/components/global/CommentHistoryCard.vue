@@ -25,6 +25,7 @@ import Clipboard from "clipboard";
 const props = defineProps<{
   post: any
 }>()
+
 const {t} = useI18n()
 const store = useStore()
 const isFollow = ref(false);
@@ -81,7 +82,7 @@ onMounted(() => {
 
 const starHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await follow(props.post.uid)).success) {
     isFollow.value = true
   }
@@ -89,7 +90,7 @@ const starHandler = async () => {
 
 const unstarHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await unfollow(props.post.uid)).success) {
     isFollow.value = false
   }
@@ -97,7 +98,7 @@ const unstarHandler = async () => {
 
 const favorHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await favor(props.post.contentid)).success) {
     isFavor.value = true
   }
@@ -105,7 +106,7 @@ const favorHandler = async () => {
 
 const unfavorHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await unfavor(props.post.contentid)).success) {
     isFavor.value = false
   }
@@ -113,7 +114,7 @@ const unfavorHandler = async () => {
 
 const thumbsupHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await thumbsup(props.post.contentid)).success) {
     isThumbs.value = true
   }
@@ -121,7 +122,7 @@ const thumbsupHandler = async () => {
 
 const thumbsdownHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await thumbsdown(props.post.contentid)).success) {
     isThumbs.value = false
   }
@@ -134,10 +135,10 @@ const commentHandler = async () => {
 onMounted(() => {
   clipboard = new Clipboard(`#shareButton${props.post.contentid}`)
   clipboard.on("success", async (event) => {
-    await aMessageBox(t(`tip.tip`), t(`tip.hasCopy`) + ` : ` + event.text, 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.hasCopy`) + ` : ` + event.text, t(`config.confirm`))
   })
   clipboard.on("error", async (event) => {
-    await aMessageBox(t(`tip.tip`), t(`tip.error`) + ` : ` + event, 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.error`) + ` : ` + event, t(`config.confirm`))
   })
 
 })
@@ -151,9 +152,11 @@ onUnmounted(() => {
     <template #header>
       <div class="card-header">
         <div class="card-header-plus">
+          <router-link :to="`/user/` + props.post.uid + `/` + props.post.contentid">
           <el-avatar :alt="props.post.uid" :fit="`fill`" :icon="UserFilled" :size="32"
                      :src="'/assets/avatar/' + props.post.avatar"
                      shape="circle"></el-avatar>
+          </router-link>
           <div style="margin-left: 12px;">
             {{ props.post.uid }}
             <div class="text timePosition">

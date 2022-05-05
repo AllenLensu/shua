@@ -4,6 +4,7 @@ import {changeProfile, findUserInfo} from "../../../configs/services.js";
 import aMessageBox from "../../../components/box/tipBox";
 import {useI18n} from "vue-i18n";
 import pca from "../../../assets/json/pca-code.json"
+import moment from "moment";
 
 const {t} = useI18n();
 const userInfoForm = reactive({
@@ -11,7 +12,7 @@ const userInfoForm = reactive({
   name: '',
   uuid: '',
   gender: '',
-  birthday: '',
+  birthday: new Date().toLocaleDateString(),
   age: 0,
   resident: '',
   household: '',
@@ -31,11 +32,9 @@ const userInfoForm = reactive({
   userInfoForm.household = response.data.household.split(',');
   userInfoForm.signature = response.data.signature;
   userInfoForm.introduction = response.data.introduction;
-  console.log(userInfoForm)
 })();
 
 const infoChangeHandle = async () => {
-  console.log(userInfoForm)
   let requestData = new FormData();
   let gender
   if (userInfoForm.gender == "MALE") {
@@ -48,17 +47,26 @@ const infoChangeHandle = async () => {
   requestData.append("gender", gender.toString())
   requestData.append("household", userInfoForm.household)
   requestData.append("introduction", userInfoForm.introduction)
+  if (!userInfoForm.name) {
+    await aMessageBox(t(`tip.tip`), t(`tip.requireInput`), t(`config.confirm`))
+  }
   requestData.append("name", userInfoForm.name)
   requestData.append("resident", userInfoForm.resident)
   requestData.append("signature", userInfoForm.signature)
   requestData.append("uuid", userInfoForm.uuid)
   const {success} = await changeProfile(requestData)
   if (success) {
-    await aMessageBox(t(`tip.tip`), t(`tip.success`), 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
   } else {
-    await aMessageBox(t(`tip.tip`), t(`tip.error`), 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.error`), t(`config.confirm`))
   }
 }
+
+const ageCalc = () => {
+  userInfoForm.age = new Date().getFullYear() - userInfoForm.birthday.getFullYear();
+  localStorage.setItem("register-birthday", moment(userInfoForm.birthday).format("YYYY-MM-DD"));
+  localStorage.setItem("register-age", String(userInfoForm.age));
+};
 </script>
 
 <template>
@@ -85,6 +93,7 @@ const infoChangeHandle = async () => {
           placeholder="Pick a date"
           style="width: 25vw"
           type="date"
+          @visible-change="ageCalc"
       ></el-date-picker>
     </el-form-item>
     <el-form-item :label='$t(`accountAttr.age`)'>

@@ -22,7 +22,13 @@ import {
     faStarHalfAlt,
     faComments,
     faCheck,
-    faShareAlt
+    faShareAlt,
+    faTrash,
+    faBirthdayCake,
+    faSignature,
+    faBullhorn,
+    faVenusMars,
+    faPaperPlane
 } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 
@@ -33,7 +39,12 @@ Object.values(icons).forEach(component => {
     app.component(component.name, component)
 })
 
-library.add(faAudioDescription, faCircle, faBugs, faStar, faPlus, faThumbsUp, faCommentAlt, faStarHalfAlt, faComments, faCheck, faShareAlt)
+library.add(faAudioDescription, faCircle, faBugs,
+    faStar, faPlus, faThumbsUp, faCommentAlt,
+    faStarHalfAlt, faComments, faCheck,
+    faShareAlt, faTrash, faBirthdayCake,
+    faSignature, faBullhorn, faVenusMars,
+    faPaperPlane)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(I18n)
 app.use(Store)

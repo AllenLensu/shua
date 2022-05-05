@@ -32,11 +32,10 @@ const handleBack = () => {
 }
 
 const sendButton = async () => {
-  console.log(vditor.value.getValue())
-  if (contentTypeRef.value.length == 0) {
+  if (contentTypeRef.value.length === 0) {
     return await aMessageBox(t(`tip.error`), t(`tip.finishArea`), t(`config.confirm`))
   } else {
-    if (!vditor.value.getValue()) {
+    if (vditor.value.getValue().length) {
       const verifyInfo = computed(() => store.state.currentUser.value)
       if (!verifyInfo.value) {
         router.push('/account')

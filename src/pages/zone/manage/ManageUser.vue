@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import {findAllUser} from "../../../configs/services.js";
+import {banUser, findAllUser, unbanUser} from "../../../configs/services.js";
 import {useI18n} from 'vue-i18n'
 import aMessageBox from '../../../components/box/tipBox.ts'
 
@@ -8,16 +8,17 @@ const userInfo = ref([]);
 const {t} = useI18n()
 
 onMounted(async () => {
-  // findAllUser().then(response => {
-  //   return response.data
-  // }).then(responseData => {
-  //   userInfo.value = responseData
-  // })
   userInfo.value = await findAllUser()
 })
 
-const handleClick = () => {
-  aMessageBox(t(`tip.tip`), t(`tip.wait4support`), 'OK')
+const handleBan = (index) => {
+  banUser(index)
+  aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
+}
+
+const handleUnBan = (index) => {
+  unbanUser(index)
+  aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
 }
 
 </script>
@@ -36,12 +37,13 @@ const handleClick = () => {
     <el-table-column :label="$t(`accountAttr.resident`)" prop="resident"/>
     <el-table-column :label="$t(`accountAttr.household`)" prop="household"/>
     <el-table-column fixed="right" :label="$t(`config.operation`)" width="120">
-      <template #default>
-        <el-button size="small" type="text" @click="handleClick"
-        >{{ $t(`config.detail`) }}
-        </el-button
-        >
-        <el-button size="small" type="text" @click="handleClick">{{ $t(`config.edit`) }}</el-button>
+      <template #default="scope">
+        <el-button size="small" type="text" @click.prevent="handleBan(scope.row.id)">
+          {{ $t(`config.ban`) }}
+        </el-button>
+        <el-button size="small" type="text" @click.prevent="handleUnBan(scope.row.id)">
+          {{ $t(`config.unban`) }}
+        </el-button>
       </template>
     </el-table-column>
   </el-table>

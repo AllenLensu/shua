@@ -21,7 +21,7 @@ const avatarRef = ref()
 const commentHandler = () => {
   const verifyInfo = computed(() => store.state.currentUser.value)
   if (!verifyInfo.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
     router.push('/account')
   } else {
     ElMessageBox.prompt(t(`placeholder.postContent`), t(`hint.floorinfloor`), {
@@ -63,9 +63,11 @@ const commentHandler = () => {
     <template #header>
       <div class="card-header">
         <div class="card-header-plus">
+          <router-link :to="`/user/` + props.comment.uid + `/` + props.comment.contentId">
           <el-avatar :alt="props.comment.uid" :fit="`fill`" :icon="UserFilled" :size="32"
                      :src="avatarRef"
                      shape="circle"></el-avatar>
+          </router-link>
           <div style="margin-left: 12px;">
             {{ props.comment.uid }}
             <div class="text timePosition">

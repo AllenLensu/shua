@@ -24,6 +24,7 @@ const info = computed(() => store.state.currentUser.value);
         </el-card>
       </div>
     </el-space>
+    <el-empty :description="$t(`tip.unhistory`)"/>
   </el-scrollbar>
 </template>
 

@@ -64,8 +64,11 @@ const router = createRouter({
                     path: 'user/info',
                     component: () => import('../pages/zone/user/UserInfo.vue')
                 }, {
-                    path: 'manage',
-                    component: () => import('../pages/zone/manage/Manage.vue')
+                    path: 'manage/user',
+                    component: () => import('../pages/zone/manage/ManageUser.vue')
+                }, {
+                    path: 'manage/post',
+                    component: () => import('../pages/zone/manage/ManagePost.vue')
                 }, {
                     path: 'setting',
                     component: () => import('../pages/zone/setting/BaseSetting.vue')
@@ -81,6 +84,9 @@ const router = createRouter({
                 }, {
                     path: 'thumb',
                     component: () => import('../pages/zone/history/ThumbHistory.vue')
+                }, {
+                    path: 'account/info',
+                    component: () => import('../pages/zone/user/AccountInfo.vue')
                 }
             ]
         },
@@ -90,23 +96,37 @@ const router = createRouter({
         },
         {
             path: '/chat',
-            component: () => import('../pages/chat/BaseChat.vue'),
-            children: [
-                {
-                    path: ':username/:id',
-                    props: true,
-                    component: () => import('../pages/chat/ChatRoom.vue')
-                },
-                {
-                    path: '',
-                    component: () => import('../pages/chat/ChatRoom.vue')
-                }
-            ]
+            component: () => import('../pages/chat/BaseChat.vue')
         },
         {
             path: '/detail/:postId',
             props: true,
             component: () => import('../pages/home/Details.vue')
+        },
+        {
+            path: '/user/:uid/:helper',
+            props: true,
+            component: () => import('../pages/user/BaseUser.vue')
+        },
+        {
+            path: '/user/:uid',
+            props: true,
+            component: () => import('../pages/user/BaseUser.vue')
+        },
+        {
+            path: '/mes',
+            component: () => import('../pages/message/BaseMes.vue'),
+            children: [
+                {
+                    path: '',
+                    component: () => import('../pages/message/MessageContent.vue')
+                },
+                {
+                    path: ':uid',
+                    props: true,
+                    component: () => import('../pages/message/MessageContent.vue')
+                }
+            ]
         }
     ]
 })

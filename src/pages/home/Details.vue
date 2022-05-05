@@ -3,9 +3,12 @@ import {
   favor,
   findPost,
   follow,
-  getComment, getCommentNum,
+  forwardPost,
+  getComment,
+  getCommentNum,
   getFavorInfo,
-  getFollowInfo, getShortUrl,
+  getFollowInfo,
+  getShortUrl,
   getThumbsInfo,
   thumbsdown,
   thumbsup,
@@ -38,7 +41,7 @@ const avatar = ref("");
 const props = defineProps<{
   postId: any
 }>();
-const shareUrl = ref(`http://localhost:18000/#/detail/`+props.postId);
+const shareUrl = ref(`http://localhost:18000/#/detail/` + props.postId);
 const shortShareUrl = ref('');
 
 (async () => {
@@ -93,7 +96,7 @@ const currentUser = computed(() => store.state.currentUser.value);
 
 const starHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await follow(postRef.value.uid)).success) {
     isFollow.value = true
   }
@@ -101,7 +104,7 @@ const starHandler = async () => {
 
 const unstarHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await unfollow(postRef.value.uid)).success) {
     isFollow.value = false
   }
@@ -109,7 +112,7 @@ const unstarHandler = async () => {
 
 const favorHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await favor(props.postId)).success) {
     isFavor.value = true
   }
@@ -117,7 +120,7 @@ const favorHandler = async () => {
 
 const unfavorHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await unfavor(props.postId)).success) {
     isFavor.value = false
   }
@@ -125,7 +128,7 @@ const unfavorHandler = async () => {
 
 const thumbsupHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await thumbsup(props.postId)).success) {
     isThumbs.value = true
   }
@@ -133,19 +136,28 @@ const thumbsupHandler = async () => {
 
 const thumbsdownHandler = async () => {
   if (!currentUser.value) {
-    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), 'OK')
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
   } else if ((await thumbsdown(props.postId)).success) {
     isThumbs.value = false
+  }
+}
+
+const forwardHandler = async () => {
+  if (!currentUser.value) {
+    aMessageBox(t(`tip.tip`), t(`tip.requireLogin`), t(`config.confirm`))
+  } else {
+    await forwardPost(props.postId, postRef.value.uid)
+    await aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
   }
 }
 
 onMounted(() => {
   clipboard = new Clipboard(`#shareButton${props.postId}`)
   clipboard.on("success", async (event) => {
-    await aMessageBox(t(`tip.tip`), t(`tip.hasCopy`) + ` : ` + event.text, 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.hasCopy`) + ` : ` + event.text, t(`config.confirm`))
   })
   clipboard.on("error", async (event) => {
-    await aMessageBox(t(`tip.tip`), t(`tip.error`) + ` : ` + event, 'OK')
+    await aMessageBox(t(`tip.tip`), t(`tip.error`) + ` : ` + event, t(`config.confirm`))
   })
 
 })
@@ -168,7 +180,7 @@ onUnmounted(() => {
             <div style="margin-left: 12px;">
               {{ postRef.uid }}
               <div class="text timePosition">
-                {{ postRef.signature }}
+                {{ postRef.signature ?? "这个用户很懒，什么都没留下" }}
                 <el-divider direction="vertical"/>
                 {{ moment(postRef.sendTime).toNow() }}
               </div>
@@ -215,7 +227,13 @@ onUnmounted(() => {
             {{ $t(`config.thumbsdown`) }}
           </el-space>
         </el-button>
-        <el-button class="button" :id="`shareButton${props.postId}`" :data-clipboard-text="shortShareUrl || shareUrl">
+        <el-button class="button" @click="forwardHandler">
+          <el-space>
+            <font-awesome-icon :icon="['fas', 'paper-plane']"/>
+            {{ $t(`config.forward`) }}
+          </el-space>
+        </el-button>
+        <el-button :id="`shareButton${props.postId}`" :data-clipboard-text="shortShareUrl || shareUrl" class="button">
           <el-space>
             <font-awesome-icon :icon="['fas', 'share-alt']"/>
             {{ $t(`config.share`) }}
@@ -224,7 +242,7 @@ onUnmounted(() => {
       </div>
     </el-card>
     <h6/>
-    <CreateComment :postId="props.postId" :commentNum="commentNum"/>
+    <CreateComment :commentNum="commentNum" :postId="props.postId"/>
     <el-space direction="vertical" fill size="large" style="width: 100%;">
       <div v-for="comment in commentRef" :key="comment.floor">
         <CommentCard :comment="comment"/>

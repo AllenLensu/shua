@@ -6,11 +6,13 @@ import {
   getPostNum,
   getTodayFollowedNum,
   getTodayFollowNum,
-  getTodayPostNum
+  getTodayPostNum,
+  postHistory
 } from "../../../configs/services.js"
 import {computed, onBeforeMount, ref} from "vue";
 import {useStore} from "vuex";
 import AccountPanelZone from "../../../components/global/AccountPanelZone.vue";
+import HistoryPostCard from "../../../components/global/HistoryPostCard.vue";
 
 const store = useStore();
 const bannerList = ref();
@@ -21,6 +23,12 @@ const followNum = ref(0);
 const tdFollowNum = ref(0);
 const followedNum = ref(0);
 const tdFollowedNum = ref(0);
+const postList = ref();
+
+(async () => {
+  const {data} = await postHistory()
+  postList.value = data
+})();
 
 (async () => {
   const {data} = await getPostNum()
@@ -54,14 +62,14 @@ const tdFollowedNum = ref(0);
 
 onBeforeMount(async () => {
   bannerList.value = (await getBanner()).data
-  console.log(bannerList.value)
 })
 </script>
 
 <template>
+  <el-scrollbar height="85vh">
   <div class="block">
     <span class="demonstration"> </span>
-    <el-carousel :interval="4000" autoplay height="30vh" type="card">
+    <el-carousel autoplay height="30vh" type="card">
       <el-carousel-item v-for="item in bannerList" :key="item.id">
         <el-image :src="`/assets/banner/` + item.path" fit="cover"/>
       </el-carousel-item>
@@ -76,8 +84,13 @@ onBeforeMount(async () => {
       :tdFollowedNum="tdFollowedNum"
       :tdPostNum="tdPostNum"
   />
+  <el-space direction="vertical" fill style="width: 100%;margin-top: 30px;">
+    <div v-for="post in postList" :key="`var_`+postList.sendTime">
+      <HistoryPostCard :post="post"/>
+    </div>
+  </el-space>
+  </el-scrollbar>
 </template>
 
 <style scoped>
-
 </style>

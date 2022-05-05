@@ -3,10 +3,14 @@ import {computed, reactive, ref} from 'vue'
 import type {ElForm} from 'element-plus'
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
+import {uidUni} from '../../../../configs/services.js'
 import '../../multiplexed.css'
+import aMessageBox from "../../../../components/box/tipBox";
+import {useI18n} from "vue-i18n";
 
 const router = useRouter()
 const store = useStore()
+const {t} = useI18n()
 store.dispatch('stepObliterate')
 const ruleFormRef = ref<InstanceType<typeof ElForm>>()
 const router2Login = () => {
@@ -56,14 +60,18 @@ const submitForm = async (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return
   const isValid = await formEl.validate()
   if (isValid) {
-    try {
-      localStorage.setItem('register-username', ruleForm.username)
-      localStorage.setItem('register-password', ruleForm.password)
-      await store.dispatch('stepIncrement')
-
-      router.push('/register/improve')
-    } catch (e) {
-      console.error(e)
+    const {data} = await uidUni(ruleForm.username)
+    if (data) {
+      try {
+        localStorage.setItem('register-username', ruleForm.username)
+        localStorage.setItem('register-password', ruleForm.password)
+        await store.dispatch('stepIncrement')
+        router.push('/register/improve')
+      } catch (e) {
+        console.error(e)
+      }
+    } else {
+      await aMessageBox(t(`tip.tip`), t(`tip.dumpun`), t(`config.confirm`))
     }
   } else {
     console.log('error submit!')

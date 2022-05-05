@@ -9,7 +9,6 @@ const store = useStore();
 
 (async () => {
   favorHistory.value = (await cfGetHistory()).data
-  console.log(favorHistory.value)
 })();
 </script>
 
@@ -19,6 +18,7 @@ const store = useStore();
       <div v-for="post in favorHistory" :key="`var_` + post.contentid">
         <HistoryCard :post="post"/>
       </div>
+      <el-empty :description="$t(`tip.unhistory`)"/>
     </el-space>
   </el-scrollbar>
 </template>

@@ -25,8 +25,8 @@ const toggle = () => {
 
 const loginOut = async () => {
   await logout()
-  await store.dispatch('clearCurrentUser')
-  router.push('/account')
+  store.dispatch('clearCurrentUser')
+  router.push('/')
 }
 </script>
 
@@ -47,6 +47,9 @@ const loginOut = async () => {
           >
             <el-menu-item index="/" route="/">{{ $t(`navigation.home`) }}</el-menu-item>
             <el-menu-item index="/chat" route="/chat">{{ $t(`navigation.chat`) }}</el-menu-item>
+            <el-menu-item index="/mes" route="/mes">
+              {{ $t(`navigation.mes`) }}
+            </el-menu-item>
             <el-menu-item index="/zone" route="/zone">
               {{ $t(`navigation.zone`) }}
             </el-menu-item>
@@ -83,7 +86,7 @@ const loginOut = async () => {
             </el-space>
           </template>
           <template v-else>
-            尚未登录
+            {{ $t(`hint.havenLogin`) }}
           </template>
           <template #reference>
             <div class="account">

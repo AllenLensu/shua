@@ -26,17 +26,26 @@ const prevPage = async () => {
 const storedBirthday = localStorage.getItem("register-birthday");
 
 const ruleForm = reactive({
-  gender: localStorage.getItem("register-gender") ?? "",
+  gender: localStorage.getItem("register-gender") ?? "1",
   lastname: localStorage.getItem("register-lastname") ?? "",
   firstname: localStorage.getItem("register-firstname") ?? "",
   birthday: storedBirthday ? new Date(storedBirthday) : new Date(),
   age: localStorage.getItem("register-age") ?? 0,
 });
 
+const notnull = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('Please input the message'))
+  } else {
+    //TODO IMPLEMENT
+    callback()
+  }
+}
+
 const rules = reactive({
-  gender: [{trigger: "blur"}],
-  lastname: [{trigger: "blur"}],
-  firstname: [{trigger: "blur"}],
+  gender: [{validator: notnull, trigger: "blur"}],
+  lastname: [{validator: notnull, trigger: "blur"}],
+  firstname: [{validator: notnull, trigger: "blur"}],
 });
 
 let genderOptions = [

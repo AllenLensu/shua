@@ -196,7 +196,7 @@ export async function findStarPost() {
 
 export async function saveTagStatus(tagStates) {
     let requestBody = new FormData();
-    requestBody.append('tagStates',tagStates)
+    requestBody.append('tagStates', tagStates)
     return await request.post(`/api/opt/starTags`, {
         requestType: 'form',
         data: requestBody
@@ -271,6 +271,12 @@ export async function ctGetHistory() {
     })
 }
 
+export async function postHistory() {
+    return await request(`/api/zone/pHistory`, {
+        methods: 'GET'
+    })
+}
+
 export async function getPostNum() {
     return await request(`/api/zone/getPostNum`, {
         methods: 'GET'
@@ -303,6 +309,146 @@ export async function getFollowedNum() {
 
 export async function getTodayFollowedNum() {
     return await request(`/api/zone/getTodayFollowedNum`, {
+        methods: 'GET'
+    })
+}
+
+export async function deletePost(post_id) {
+    return await request(`/api/opt/` + post_id + `/deletePost`, {
+        methods: 'GET'
+    })
+}
+
+export async function getUserInfoZone(post_id, uid) {
+    return await request(`/api/user/` + uid + `/` + post_id + `/info`, {
+        methods: 'GET'
+    })
+}
+
+export async function findUserInfoZone(uid) {
+    return await request(`/api/user/` + uid + `/info`, {
+        methods: 'GET'
+    })
+}
+
+export async function getUserPostZone(uid) {
+    return await request(`/api/user/` + uid + `/post`, {
+        methods: 'GET'
+    })
+}
+
+export async function banUser(uuid) {
+    return await request(`/api/manage/1/` + uuid + `/ban`, {
+        methods: 'GET'
+    })
+}
+
+export async function unbanUser(uuid) {
+    return await request(`/api/manage/0/` + uuid + `/ban`, {
+        methods: 'GET'
+    })
+}
+
+export async function delUser(uuid) {
+    return await request(`/api/manage/` + uuid + `/del`, {
+        methods: 'GET'
+    })
+}
+
+export async function banPost(id) {
+    return await request(`/api/manage/1/` + id + `/banpost`, {
+        methods: 'GET'
+    })
+}
+
+export async function unbanPost(id) {
+    return await request(`/api/manage/0/` + id + `/banpost`, {
+        methods: 'GET'
+    })
+}
+
+export async function getAllPost() {
+    return await request(`/api/manage/allPost`, {
+        methods: 'GET'
+    })
+}
+
+export async function forwardPost(id, uid) {
+    return await request(`/api/content/` + id + `/` + uid + `/forward`, {
+        methods: 'GET'
+    })
+}
+
+export async function uidUni(uid) {
+    return await request(`/api/verifyUID/` + uid, {
+        methods: 'GET'
+    })
+}
+
+export async function deleteUser() {
+    return await request(`/api/user/cancellate`, {
+        methods: 'GET'
+    })
+}
+
+export async function updatePass(data) {
+    return await request.post(`/api/account/changePass`, {
+        requestType: 'form',
+        data: data
+    })
+}
+
+export async function getMesList() {
+    return await request(`/api/mes/list`, {
+        methods: 'GET'
+    })
+}
+
+export async function dumpHelper() {
+    return await request(`/api/mes/dumpHelper`, {
+        methods: 'GET'
+    })
+}
+
+export async function getChatList() {
+    return await request(`/api/mes/chatlist`, {
+        methods: 'GET'
+    })
+}
+
+export async function addChatList(uid) {
+    return await request(`/api/mes/`+uid+`/addchat`, {
+        methods: 'GET'
+    })
+}
+
+export async function addMessage(data) {
+    return await request.post(`/api/mes/addmes`, {
+        requestType: 'form',
+        data: data
+    })
+}
+
+export async function findMessage(uid) {
+    return await request(`/api/mes/`+uid+`/findmes`, {
+        methods: 'GET'
+    })
+}
+
+export async function getUUID(uid) {
+    return await request(`/api/mes/`+uid+`/getuuid`, {
+        methods: 'GET'
+    })
+}
+
+export async function getFollow() {
+    return await request(`/api/zone/getFollow`, {
+        methods: 'GET'
+    })
+}
+
+export async function getFollowed() {
+    return await request(`/api/zone/getFollowed`, {
         methods: 'GET'
     })
 }

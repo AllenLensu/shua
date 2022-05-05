@@ -8,6 +8,7 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 const {t} = useI18n()
+const scrollBarHeight = ref(window.innerHeight - 60)
 const isAdmin = computed(() => store.state.currentUser.value?.accountRole)
 const isCollapse = ref((window.outerWidth / window.outerHeight < 1) ? true : (window.outerWidth < 768));
 const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px');
@@ -42,20 +43,31 @@ const getActiveIndex = (): string => {
       return 'user/info'
     case '/zone/user/info/':
       return 'user/info'
-    case '/zone/manage':
-      return 'manage'
-    case '/zone/manage/':
-      return 'manage'
+    case '/zone/account/info':
+      return 'account/info'
+    case '/zone/account/info/':
+      return 'account/info'
+    case '/zone/manage/user':
+      return 'manage/user'
+    case '/zone/manage/user/':
+      return 'manage/user'
+    case '/zone/manage/post':
+      return 'manage/post'
+    case '/zone/manage/post/':
+      return 'manage/post'
     default:
       return 'setting'
   }
 }
 
 function resize() {
-  if (window.outerWidth / window.outerHeight < 1) {
+  scrollBarHeight.value = window.innerHeight - 60;
+  let woWidth = window.innerWidth;
+  let woHeight = window.innerHeight;
+  if (woWidth / woHeight < 1) {
     isCollapse.value = true
   } else {
-    isCollapse.value = window.outerWidth < 768;
+    isCollapse.value = woWidth < 768;
   }
   if (isCollapse.value) {
     sidMenuWidth.value = '60px'
@@ -74,8 +86,8 @@ onUnmounted(() => {
 
 <template>
   <el-container>
-    <el-aside>
-      <el-affix :offset="80">
+    <el-aside :width="sidMenuWidth">
+      <el-scrollbar :max-height="scrollBarHeight" :noresize="true">
         <el-menu
             :collapse="isCollapse"
             :default-active="getActiveIndex()"
@@ -86,7 +98,7 @@ onUnmounted(() => {
             <el-icon>
               <HomeFilled/>
             </el-icon>
-            <span>{{ $t(`navigation.home`) }}</span>
+            <span>{{ $t(`navigation.zonehome`) }}</span>
           </el-menu-item>
           <el-sub-menu index="history">
             <template #title>
@@ -110,15 +122,21 @@ onUnmounted(() => {
             </template>
             <el-menu-item-group :title="t(`hint.information`)">
               <el-menu-item index="user/info" route="/zone/user/info">{{ $t(`navigation.userInfo`) }}</el-menu-item>
-              <el-menu-item index="account/info" route="/error">{{ $t(`navigation.accountInfo`) }}</el-menu-item>
+              <el-menu-item index="account/info" route="/zone/account/info">{{ $t(`navigation.accountInfo`) }}</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
-          <el-menu-item v-if="!(!!isAdmin)" index="manage" route="/zone/manage">
-            <el-icon>
-              <Management/>
-            </el-icon>
-            <span>{{ $t(`navigation.manage`) }}</span>
-          </el-menu-item>
+          <el-sub-menu v-if="!(!!isAdmin)" index="manage">
+            <template #title>
+              <el-icon>
+                <Management/>
+              </el-icon>
+              <span>{{ $t(`navigation.manage`) }}</span>
+            </template>
+            <el-menu-item-group :title="t(`hint.manage`)">
+              <el-menu-item index="manage/user" route="/zone/manage/user">{{ $t(`navigation.manageUser`) }}</el-menu-item>
+              <el-menu-item index="manage/post" route="/zone/manage/post">{{ $t(`navigation.managePost`) }}</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
           <el-menu-item index="setting" route="/zone/setting">
             <el-icon>
               <Setting/>
@@ -126,7 +144,7 @@ onUnmounted(() => {
             <span>{{ $t(`navigation.setting`) }}</span>
           </el-menu-item>
         </el-menu>
-      </el-affix>
+      </el-scrollbar>
     </el-aside>
     <el-container>
       <el-main>

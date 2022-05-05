@@ -7,6 +7,7 @@ import moment from "moment";
 import {useStore} from "vuex";
 import {UserFilled} from "@element-plus/icons-vue";
 import {
+  deletePost,
   favor,
   follow,
   getCommentNum,
@@ -131,6 +132,16 @@ const commentHandler = async () => {
   router.push('/detail/' + props.post.contentid)
 }
 
+const deleteHandler = async () => {
+  const {success} = await deletePost(props.post.contentid)
+  if (success) {
+    window.location.reload()
+    await aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
+  } else {
+    await aMessageBox(t(`tip.tip`), t(`tip.error`), t(`config.confirm`))
+  }
+}
+
 onMounted(() => {
   clipboard = new Clipboard(`#shareButton${props.post.contentid}`)
   clipboard.on("success", async (event) => {
@@ -182,7 +193,11 @@ onUnmounted(() => {
       </div>
     </template>
     <div :id="``+ post.uid + post.commentTime +post.contentid" class="text item"></div>
-    <el-divider/>
+    <el-divider content-position="right">
+      热度：{{
+        (10 * (-Math.pow(1.001, -(Math.ceil(props.post.hot) - 36600)) + 1)).toFixed(2).toString()
+      }}
+    </el-divider>
     <div class="optionPosition">
       <el-button v-if="isFavor" class="button" color="#E6A23C" @click="unfavorHandler">
         <el-space>
@@ -219,6 +234,12 @@ onUnmounted(() => {
         <el-space>
           <font-awesome-icon :icon="['fas', 'share-alt']"/>
           {{ $t(`config.share`) }}
+        </el-space>
+      </el-button>
+      <el-button class="button" @click="deleteHandler">
+        <el-space>
+          <font-awesome-icon :icon="['fas', 'trash']"/>
+          {{ $t(`config.delete`) }}
         </el-space>
       </el-button>
     </div>
