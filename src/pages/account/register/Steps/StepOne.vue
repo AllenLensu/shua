@@ -28,7 +28,6 @@ const validateId = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the id'))
   } else {
-    //TODO IMPLEMENT
     callback()
   }
 }
@@ -37,7 +36,6 @@ const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
   } else {
-    //TODO IMPLEMENT
     callback()
   }
 }

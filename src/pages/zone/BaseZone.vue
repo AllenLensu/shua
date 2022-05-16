@@ -21,7 +21,6 @@ const sidMenuWidth = ref(isCollapse.value ? '60px' : '200px');
 })()
 
 const getActiveIndex = (): string => {
-  //TODO IMPLEMENT
   switch (route.fullPath) {
     case '/zone':
       return 'zone'

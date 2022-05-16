@@ -25,7 +25,6 @@ const validateId = (rule: any, value: any, callback: any) => {
     return callback(new Error('Please input the id'))
   }
   setTimeout(() => {
-    //TODO IMPLEMENT
     callback()
   }, 1000)
 }
@@ -34,7 +33,6 @@ const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
   } else {
-    //TODO IMPLEMENT
     callback()
   }
 }

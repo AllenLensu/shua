@@ -37,7 +37,6 @@ const notnull = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the message'))
   } else {
-    //TODO IMPLEMENT
     callback()
   }
 }
