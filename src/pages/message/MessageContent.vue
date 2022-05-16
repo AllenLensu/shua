@@ -44,6 +44,10 @@ const fetchMessage = async () => {
 
 fetchMessage()
 
+onUnmounted(() => {
+  clearTimeout(timeoutID.value)
+})
+
 const sendButton = async () => {
   let request = new FormData();
   request.append("send", isLogin.value.username)
@@ -56,10 +60,6 @@ const sendButton = async () => {
     inputRef.value = ''
   }
 }
-
-onUnmounted(() => {
-  clearTimeout(timeoutID.value)
-})
 </script>
 
 <template>
