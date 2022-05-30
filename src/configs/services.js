@@ -1,5 +1,5 @@
 import request from "./request";
-import {now} from "moment";
+import moment from "moment";
 
 export async function getShortUrl(longUrl) {
     let requestBody = new FormData();
@@ -118,7 +118,7 @@ export async function addPost(post, types) {
     requestBody.append("type", type);
     requestBody.append("type_ex", typeEx);
     //选择Instant
-    requestBody.append("sendTime", now())
+    requestBody.append("sendTime", moment.now())
     return await request.post(`/api/content/add`, {
         requestType: 'form',
         data: requestBody

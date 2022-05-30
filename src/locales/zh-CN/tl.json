@@ -131,6 +131,7 @@
     "avatarSize": "头像大小不能超过1MB！",
     "bugs": "喔唷，哗啦啦！",
     "congratulation": "恭喜",
+    "delconfirm": "是否确认删除",
     "delinf": "账号删除后，您将不再能够找回您的用户数据",
     "dumpun": "用户名重复",
     "duplicateUsername": "重复添加的用户",

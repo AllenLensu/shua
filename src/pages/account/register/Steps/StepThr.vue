@@ -123,7 +123,7 @@ const submitUpload = async () => {
           }}
         </el-button>
         <el-button type="primary" @click="submitUpload">{{
-            $t(`config.submit`)
+            $t(`config.register`)
           }}
         </el-button>
       </div>

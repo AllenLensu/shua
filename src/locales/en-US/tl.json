@@ -131,6 +131,7 @@
     "avatarSize": "Avatar picture size can not exceed 1MB!",
     "bugs": "YaHoo, you can get some rest!",
     "congratulation": "Congratulations",
+    "delconfirm": "Would you like to delete this post",
     "delinf": "After account deletion, you will no longer be able to retrieve your user data",
     "dumpun": "Duplicate username",
     "duplicateUsername": "Duplicate added username",

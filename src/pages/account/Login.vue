@@ -115,7 +115,7 @@ onBeforeRouteLeave((to, from) => {
           <el-button class="font global" type="primary" @click="router2Register">{{ $t(`config.register`) }}</el-button>
           <el-button class="font global" @click="resetForm(ruleFormRef)">{{ $t(`config.reset`) }}</el-button>
           <el-button class="font global" type="primary" @click="submitForm(ruleFormRef)">{{
-              $t(`config.submit`)
+              $t(`config.login`)
             }}
           </el-button>
         </div>

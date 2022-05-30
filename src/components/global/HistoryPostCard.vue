@@ -22,6 +22,7 @@ import {
 } from "../../configs/services.js"
 import {useRouter} from "vue-router";
 import Clipboard from "clipboard";
+import {Action, ElMessage, ElMessageBox} from "element-plus";
 
 const props = defineProps<{
   post: any
@@ -133,13 +134,29 @@ const commentHandler = async () => {
 }
 
 const deleteHandler = async () => {
-  const {success} = await deletePost(props.post.contentid)
-  if (success) {
-    window.location.reload()
-    await aMessageBox(t(`tip.tip`), t(`tip.success`), t(`config.confirm`))
-  } else {
-    await aMessageBox(t(`tip.tip`), t(`tip.error`), t(`config.confirm`))
-  }
+  await ElMessageBox({
+    title: t(`tip.tip`),
+    message: t(`tip.delconfirm`),
+    confirmButtonText: t(`config.confirm`),
+    callback: async (action: Action) => {
+      if(`${action}` == 'confirm') {
+        const {success} = await deletePost(props.post.contentid)
+        if (success) {
+          window.location.reload()
+          ElMessage({
+            type: 'success',
+            message: t(`tip.success`),
+          })
+        } else {
+          ElMessage({
+            type: 'error',
+            message: t(`tip.failure`),
+          })
+        }
+      }
+    },
+  });
+
 }
 
 onMounted(() => {
